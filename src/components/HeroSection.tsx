@@ -13,7 +13,7 @@ const HeroSection = () => {
 
   const handleDownload = (os: string) => {
     // Placeholder for actual download logic
-    console.log(`Downloading MetaTrader Bot Manager for ${os}`);
+    console.log(`Downloading Peaceful Investment App for ${os}`);
   };
 
   return (
@@ -53,12 +53,12 @@ const HeroSection = () => {
 
             {/* Main Headline */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              Control Your <span className="text-gradient bg-gradient-to-r from-accent-cyan to-accent-green bg-clip-text text-transparent">MetaTrader Bots</span> from Anywhere
+              Control Your <span className="text-gradient bg-gradient-to-r from-accent-cyan to-accent-green bg-clip-text text-transparent">Investment Bots</span> from Anywhere
             </h1>
 
             {/* Subtitle */}
             <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl animate-slide-up" style={{ animationDelay: '0.4s' }}>
-              Easily manage strategies, monitor trades, and optimize performance — all from one powerful app.
+              Peaceful Investment - Easily manage strategies, monitor trades, and optimize performance.
             </p>
 
             {/* Download Buttons */}
