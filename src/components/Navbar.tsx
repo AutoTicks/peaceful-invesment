@@ -15,7 +15,10 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const navLinks = [
+  const navLinks = user ? [
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Verification", href: "/verification" },
+  ] : [
     { name: "Home", href: "/" },
     { name: "Features", href: "/#features" },
     { name: "Pricing", href: "/#pricing" },

@@ -20,6 +20,7 @@ export interface UserProfile {
   investment_goals: string[] | null;
   documents_uploaded: boolean;
   has_completed_profile: boolean;
+  status: string | null;
   created_at: string;
   updated_at: string;
 }
