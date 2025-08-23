@@ -281,6 +281,127 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          notes: string | null
+          payment_date: string
+          referral_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          referral_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          referral_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_payments_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referral_signups: {
+        Row: {
+          created_at: string
+          deposit_amount: number | null
+          deposit_date: string | null
+          id: string
+          referral_id: string
+          referred_user_id: string
+          signup_date: string
+        }
+        Insert: {
+          created_at?: string
+          deposit_amount?: number | null
+          deposit_date?: string | null
+          id?: string
+          referral_id: string
+          referred_user_id: string
+          signup_date?: string
+        }
+        Update: {
+          created_at?: string
+          deposit_amount?: number | null
+          deposit_date?: string | null
+          id?: string
+          referral_id?: string
+          referred_user_id?: string
+          signup_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_signups_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referrals: {
+        Row: {
+          created_at: string
+          deposit_date: string | null
+          id: string
+          initial_deposit: number | null
+          is_active: boolean
+          referral_code: string
+          referral_link: string
+          status: string
+          total_earnings: number
+          total_referrals: number
+          updated_at: string
+          user_id: string
+          year_to_date_earnings: number
+        }
+        Insert: {
+          created_at?: string
+          deposit_date?: string | null
+          id?: string
+          initial_deposit?: number | null
+          is_active?: boolean
+          referral_code: string
+          referral_link: string
+          status?: string
+          total_earnings?: number
+          total_referrals?: number
+          updated_at?: string
+          user_id: string
+          year_to_date_earnings?: number
+        }
+        Update: {
+          created_at?: string
+          deposit_date?: string | null
+          id?: string
+          initial_deposit?: number | null
+          is_active?: boolean
+          referral_code?: string
+          referral_link?: string
+          status?: string
+          total_earnings?: number
+          total_referrals?: number
+          updated_at?: string
+          user_id?: string
+          year_to_date_earnings?: number
+        }
+        Relationships: []
+      }
       verification_requests: {
         Row: {
           created_at: string
@@ -333,7 +454,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_referral_code: {
+        Args: { first_name: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
