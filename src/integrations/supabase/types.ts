@@ -59,6 +59,60 @@ export type Database = {
           },
         ]
       }
+      metatrader_accounts: {
+        Row: {
+          account_type: string
+          balance: number
+          created_at: string
+          currency: string
+          equity: number
+          free_margin: number
+          id: string
+          last_updated: string
+          leverage: number
+          login: string
+          margin: number
+          server: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_type?: string
+          balance?: number
+          created_at?: string
+          currency?: string
+          equity?: number
+          free_margin?: number
+          id?: string
+          last_updated?: string
+          leverage?: number
+          login: string
+          margin?: number
+          server: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_type?: string
+          balance?: number
+          created_at?: string
+          currency?: string
+          equity?: number
+          free_margin?: number
+          id?: string
+          last_updated?: string
+          leverage?: number
+          login?: string
+          margin?: number
+          server?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null

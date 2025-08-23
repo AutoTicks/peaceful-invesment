@@ -17,6 +17,7 @@ const Navbar = () => {
 
   const navLinks = user ? [
     { name: "Dashboard", href: "/dashboard" },
+    { name: "Trading Accounts", href: "/meta-trader-accounts" },
     { name: "Verification", href: "/verification" },
   ] : [
     { name: "Home", href: "/" },

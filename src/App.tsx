@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import CreateAccount from "./pages/CreateAccount";
 import VerificationCenter from "./pages/VerificationCenter";
+import MetaTraderAccounts from "./pages/MetaTraderAccounts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
                 <Route path="/create-account" element={<CreateAccount />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/verification" element={<VerificationCenter />} />
+                <Route path="/meta-trader-accounts" element={<MetaTraderAccounts />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
