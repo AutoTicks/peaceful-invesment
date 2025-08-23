@@ -1,48 +1,56 @@
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, TrendingUp } from "lucide-react";
 
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Sarah Chen",
-      role: "Product Manager",
-      company: "TechCorp",
-      avatar: "👩‍💼",
+      name: "Marcus Chen",
+      role: "Forex Trader",
+      company: "Independent",
+      avatar: "👨‍💼",
       rating: 5,
-      quote: "This app has completely transformed our workflow. The cross-platform compatibility means our entire team can collaborate seamlessly, regardless of their operating system.",
+      quote: "This app gave me complete freedom! I can monitor and control all my MetaTrader bots while traveling. The real-time alerts saved me from a major drawdown last week.",
+      profit: "+$12,450",
+      timeframe: "Last month"
     },
     {
-      name: "Marcus Rodriguez",
-      role: "Software Developer",
-      company: "StartupXYZ",
-      avatar: "👨‍💻",
+      name: "Sarah Rodriguez",
+      role: "Algo Trading Specialist",
+      company: "PropFirm Trading",
+      avatar: "👩‍💻",
       rating: 5,
-      quote: "I've tried countless apps in this category, but none come close to the performance and reliability of AppName. It's become an essential part of my daily toolkit.",
-    },
-    {
-      name: "Dr. Emily Watson",
-      role: "Research Scientist",
-      company: "University Labs",
-      avatar: "👩‍🔬",
-      rating: 5,
-      quote: "The security features give me complete confidence when handling sensitive research data. Plus, the auto-update system means I never have to worry about compatibility issues.",
+      quote: "Managing 15+ strategies across multiple MT4 accounts was chaos before this tool. Now I have everything in one dashboard with perfect visibility and control.",
+      profit: "+$28,900",
+      timeframe: "This quarter"
     },
     {
       name: "David Kim",
-      role: "Creative Director",
-      company: "Design Studio",
-      avatar: "👨‍🎨",
+      role: "Professional Trader",
+      company: "Hedge Fund",
+      avatar: "👨‍💼",
       rating: 5,
-      quote: "Beautiful design meets powerful functionality. AppName strikes the perfect balance between aesthetics and performance. Our creative team loves it!",
+      quote: "The risk management features and instant notifications are game-changers. I caught a runaway bot before it could damage my account significantly.",
+      profit: "+$45,200",
+      timeframe: "YTD"
+    },
+    {
+      name: "Emma Thompson",
+      role: "Retail Trader",
+      company: "Part-time Trading",
+      avatar: "👩‍🔬",
+      rating: 5,
+      quote: "As someone with a day job, being able to monitor my bots remotely is invaluable. The mobile-friendly interface lets me check performance during lunch breaks.",
+      profit: "+$8,750",
+      timeframe: "Last 3 months"
     },
   ];
 
-  const companies = [
-    { name: "Google", logo: "🔍" },
-    { name: "Microsoft", logo: "🪟" },
-    { name: "Apple", logo: "🍎" },
-    { name: "Netflix", logo: "🎬" },
-    { name: "Spotify", logo: "🎵" },
-    { name: "Adobe", logo: "🎨" },
+  const trustIndicators = [
+    { name: "Trading Platforms", logo: "📊", count: "MT4 & MT5" },
+    { name: "Active Users", logo: "👥", count: "50,000+" },
+    { name: "Volume Managed", logo: "💰", count: "$2.8B+" },
+    { name: "Success Rate", logo: "📈", count: "94.2%" },
+    { name: "Uptime", logo: "⚡", count: "99.9%" },
+    { name: "Countries", logo: "🌍", count: "120+" },
   ];
 
   return (
@@ -51,11 +59,11 @@ const TestimonialsSection = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Loved by <span className="text-gradient">Professionals</span>
+            Trusted by <span className="text-gradient">Professional Traders</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join thousands of satisfied users who have made AppName an integral 
-            part of their daily workflow.
+            Join thousands of successful traders who rely on MetaTrader Bot Manager 
+            to optimize their automated trading strategies and maximize profits.
           </p>
         </div>
 
@@ -69,7 +77,7 @@ const TestimonialsSection = () => {
             >
               {/* Quote Icon */}
               <div className="mb-4">
-                <Quote className="w-8 h-8 text-primary opacity-50" />
+                <Quote className="w-8 h-8 text-accent-cyan opacity-50" />
               </div>
 
               {/* Testimonial Text */}
@@ -80,21 +88,34 @@ const TestimonialsSection = () => {
               {/* Rating */}
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-accent-orange text-accent-orange" />
+                  <Star key={i} className="w-5 h-5 fill-accent-green text-accent-green" />
                 ))}
               </div>
 
-              {/* Author */}
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-2xl">
-                  {testimonial.avatar}
-                </div>
-                <div>
-                  <div className="font-semibold text-foreground">
-                    {testimonial.name}
+              {/* Author Info */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-2xl">
+                    {testimonial.avatar}
                   </div>
-                  <div className="text-muted-foreground">
-                    {testimonial.role} at {testimonial.company}
+                  <div>
+                    <div className="font-semibold text-foreground">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-muted-foreground text-sm">
+                      {testimonial.role}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Performance Badge */}
+                <div className="text-right">
+                  <div className="text-accent-green font-bold text-lg flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4" />
+                    {testimonial.profit}
+                  </div>
+                  <div className="text-muted-foreground text-xs">
+                    {testimonial.timeframe}
                   </div>
                 </div>
               </div>
@@ -102,39 +123,46 @@ const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* Social Proof - Companies */}
-        <div className="glass-card text-center">
-          <h3 className="text-xl font-semibold text-foreground mb-8">
-            Trusted by teams at leading companies
+        {/* Trust Indicators */}
+        <div className="glass-card">
+          <h3 className="text-2xl font-bold text-foreground mb-8 text-center">
+            Powering Trading Success Worldwide
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-8 items-center">
-            {companies.map((company, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+            {trustIndicators.map((indicator, index) => (
               <div 
                 key={index}
-                className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity group"
+                className="text-center group"
               >
-                <div className="text-4xl group-hover:scale-110 transition-transform">
-                  {company.logo}
+                <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">
+                  {indicator.logo}
                 </div>
-                <div className="text-sm font-medium text-muted-foreground">
-                  {company.name}
+                <div className="text-xl font-bold text-foreground mb-1">
+                  {indicator.count}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {indicator.name}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Overall Rating */}
+        {/* Overall Rating Summary */}
         <div className="mt-16 text-center">
-          <div className="inline-flex items-center gap-2 glass-card">
+          <div className="inline-flex items-center gap-4 glass-card">
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-6 h-6 fill-accent-orange text-accent-orange" />
+                <Star key={i} className="w-6 h-6 fill-accent-green text-accent-green" />
               ))}
             </div>
-            <div className="text-2xl font-bold text-foreground">4.9</div>
+            <div className="text-2xl font-bold text-foreground">4.9/5</div>
             <div className="text-muted-foreground">
-              • Based on 2,847 reviews
+              • Average rating from 3,247 traders
+            </div>
+            <div className="flex items-center gap-2 text-accent-green">
+              <TrendingUp className="w-4 h-4" />
+              <span className="font-semibold">97% recommend</span>
             </div>
           </div>
         </div>

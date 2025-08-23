@@ -8,36 +8,36 @@ import {
 const FAQSection = () => {
   const faqs = [
     {
-      question: "Is AppName free to use?",
-      answer: "AppName offers both free and premium tiers. The free version includes core functionality with basic features, while our premium subscription unlocks advanced tools, priority support, and additional storage. You can upgrade or downgrade your plan at any time."
+      question: "Does it work with both MT4 and MT5?",
+      answer: "Yes! MetaTrader Bot Manager supports both MetaTrader 4 and MetaTrader 5 platforms. It automatically detects your terminal version and adapts the interface accordingly. You can manage Expert Advisors, custom indicators, and trading signals from both platforms simultaneously."
     },
     {
-      question: "How do I update to the latest version?",
-      answer: "AppName automatically checks for updates and will notify you when a new version is available. You can also manually check for updates in the app's settings menu. Updates are delivered seamlessly in the background, so you'll always have the latest features and security improvements."
+      question: "Is my trading data safe and secure?",
+      answer: "Absolutely. We use bank-grade AES-256 encryption to protect all your trading data and account information. Your MetaTrader credentials are encrypted locally and never stored on our servers. All data transmission uses secure SSL protocols, and we comply with financial industry security standards."
     },
     {
-      question: "What are the minimum system requirements?",
-      answer: "For Windows: Windows 10 or later, 4GB RAM, 100MB free space. For macOS: macOS 11.0 or later, 4GB RAM, 150MB free space. For Linux: Ubuntu 20.04+/Fedora 34+, 4GB RAM, 80MB free space. We recommend having the latest OS updates installed for optimal performance."
+      question: "Can I manage multiple MT accounts from one app?",
+      answer: "Yes, you can connect and manage multiple MetaTrader accounts from different brokers within a single dashboard. The app supports unlimited account connections and provides consolidated reporting across all your trading accounts, making portfolio management effortless."
     },
     {
-      question: "Can I use AppName offline?",
-      answer: "Yes! AppName works fully offline for most features. Your data is stored locally on your device, and any changes will sync automatically when you reconnect to the internet. Some advanced features like cloud collaboration require an internet connection."
+      question: "Do I need a VPS to use this app?",
+      answer: "No, a VPS is not required, but it's recommended for 24/7 trading. The app works perfectly with MetaTrader running on your local computer, VPS, or cloud server. For uninterrupted trading, many users prefer running MT4/MT5 on a VPS while controlling it remotely through our app."
     },
     {
-      question: "How do I transfer my data between devices?",
-      answer: "AppName includes built-in cloud synchronization that automatically keeps your data in sync across all your devices. Simply sign in with the same account on each device, and your data will be synchronized automatically. You can also export/import data manually if preferred."
+      question: "How do alerts and notifications work?",
+      answer: "Our smart alert system monitors your bots in real-time and sends instant notifications via push notifications, email, or SMS. You can customize alerts for trade openings/closings, profit targets, stop losses, connection issues, and custom performance thresholds."
     },
     {
-      question: "Is my data secure and private?",
-      answer: "Absolutely. AppName uses end-to-end encryption to protect your data both in transit and at rest. We follow industry-standard security practices and never share your personal data with third parties. You can review our detailed privacy policy for complete transparency about data handling."
+      question: "What happens if my internet connection drops?",
+      answer: "Your MetaTrader bots will continue running independently on your terminal or VPS. The app will automatically reconnect when your internet is restored and sync all missed data. For maximum reliability, we recommend running MT4/MT5 on a stable VPS connection."
     },
     {
-      question: "Do you offer technical support?",
-      answer: "Yes, we provide comprehensive support through multiple channels. Free users have access to our knowledge base and community forums. Premium users get priority email support with guaranteed response times. Enterprise customers receive dedicated support with phone and chat options."
+      question: "Can I modify EA settings remotely?",
+      answer: "Yes, you can adjust most Expert Advisor parameters remotely, including lot sizes, risk levels, and trading hours. However, some complex settings may require direct access to your MetaTrader terminal. The app clearly indicates which parameters can be modified remotely."
     },
     {
-      question: "Can I customize the app's appearance?",
-      answer: "AppName offers extensive customization options including multiple themes (light, dark, and custom), adjustable layouts, and configurable shortcuts. You can tailor the interface to match your workflow and preferences. Premium users get access to additional themes and advanced customization options."
+      question: "Is there a mobile version available?",
+      answer: "The current desktop application is optimized for mobile browsers and tablets, providing full functionality on any device. We're developing dedicated mobile apps for iOS and Android, which will be available in Q2 2024 with additional mobile-specific features."
     }
   ];
 
@@ -50,8 +50,8 @@ const FAQSection = () => {
             Frequently Asked <span className="text-gradient">Questions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Have questions? We've got answers. If you can't find what you're looking for, 
-            our support team is always ready to help.
+            Get answers to common questions about MetaTrader Bot Manager. 
+            Our comprehensive FAQ covers setup, security, functionality, and best practices.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ const FAQSection = () => {
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border-border/50">
-                <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:text-primary transition-colors">
+                <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:text-accent-cyan transition-colors">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed pt-2 pb-6">
@@ -71,32 +71,75 @@ const FAQSection = () => {
           </Accordion>
         </div>
 
-        {/* Contact Support */}
+        {/* Support Resources */}
+        <div className="mt-16 grid md:grid-cols-2 gap-8">
+          <div className="glass-card text-center">
+            <div className="text-4xl mb-4">📚</div>
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              Documentation & Guides
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              Comprehensive documentation, video tutorials, and step-by-step guides for all features.
+            </p>
+            <a 
+              href="#" 
+              className="download-btn-secondary inline-flex items-center justify-center"
+            >
+              Browse Documentation
+            </a>
+          </div>
+
+          <div className="glass-card text-center">
+            <div className="text-4xl mb-4">💬</div>
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              24/7 Support & Community
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              Join our active trader community and get help from experts and fellow users.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <a 
+                href="#" 
+                className="download-btn-primary inline-flex items-center justify-center text-sm px-4"
+              >
+                Live Chat
+              </a>
+              <a 
+                href="#" 
+                className="download-btn-secondary inline-flex items-center justify-center text-sm px-4"
+              >
+                Community
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact CTA */}
         <div className="mt-16 text-center glass-card">
           <h3 className="text-xl font-semibold text-foreground mb-4">
-            Still have questions?
+            Still have questions about MetaTrader Bot Manager?
           </h3>
           <p className="text-muted-foreground mb-6">
-            Our friendly support team is here to help you get the most out of AppName.
+            Our trading experts are here to help you optimize your automated trading setup.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="#" 
               className="download-btn-primary inline-flex items-center justify-center"
             >
-              💬 Contact Support
+              💬 Chat with Trading Expert
             </a>
             <a 
               href="#" 
               className="download-btn-secondary inline-flex items-center justify-center"
             >
-              📚 Browse Documentation
+              📧 Email Support
             </a>
             <a 
               href="#" 
               className="download-btn-secondary inline-flex items-center justify-center"
             >
-              👥 Join Community
+              📞 Schedule Call
             </a>
           </div>
         </div>
