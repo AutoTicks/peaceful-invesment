@@ -19,6 +19,7 @@ const Navbar = () => {
     { name: "Dashboard", href: "/dashboard" },
     { name: "Trading Accounts", href: "/meta-trader-accounts" },
     { name: "Overseas Company", href: "/overseas-company" },
+    { name: "Referrals", href: "/referrals" },
     { name: "Verification", href: "/verification" },
   ] : [
     { name: "Home", href: "/" },
