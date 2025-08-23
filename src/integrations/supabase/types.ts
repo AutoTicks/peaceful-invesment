@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_actions: {
+        Row: {
+          action: string
+          admin_id: string
+          created_at: string
+          id: string
+          note: string | null
+          user_id: string
+          verification_request_id: string
+        }
+        Insert: {
+          action: string
+          admin_id: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          user_id: string
+          verification_request_id: string
+        }
+        Update: {
+          action?: string
+          admin_id?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          user_id?: string
+          verification_request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_actions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "admin_actions_verification_request_id_fkey"
+            columns: ["verification_request_id"]
+            isOneToOne: false
+            referencedRelation: "verification_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           address: string | null
@@ -32,6 +77,7 @@ export type Database = {
           phone: string | null
           risk_tolerance: string | null
           state: string | null
+          status: string | null
           updated_at: string
           user_id: string
           zip_code: string | null
@@ -53,6 +99,7 @@ export type Database = {
           phone?: string | null
           risk_tolerance?: string | null
           state?: string | null
+          status?: string | null
           updated_at?: string
           user_id: string
           zip_code?: string | null
@@ -74,11 +121,59 @@ export type Database = {
           phone?: string | null
           risk_tolerance?: string | null
           state?: string | null
+          status?: string | null
           updated_at?: string
           user_id?: string
           zip_code?: string | null
         }
         Relationships: []
+      }
+      verification_requests: {
+        Row: {
+          created_at: string
+          documents: Json
+          id: string
+          reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submitted_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          documents?: Json
+          id?: string
+          reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          documents?: Json
+          id?: string
+          reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
     }
     Views: {
