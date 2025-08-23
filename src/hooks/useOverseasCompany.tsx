@@ -55,14 +55,14 @@ export const useOverseasCompany = () => {
 
     try {
       setLoading(true);
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('overseas_company_requests')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setRequests(data || []);
+      setRequests(data as CompanyRequest[] || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch requests');
     } finally {
@@ -75,14 +75,14 @@ export const useOverseasCompany = () => {
     if (!user?.id) return;
 
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('overseas_companies')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCompanyInfo(data || []);
+      setCompanyInfo(data as CompanyInfo[] || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch company info');
     }
@@ -94,7 +94,7 @@ export const useOverseasCompany = () => {
 
     try {
       setLoading(true);
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('overseas_company_requests')
         .insert({
           user_id: user.id,
@@ -149,7 +149,7 @@ export const useOverseasCompany = () => {
       }
 
       // Update request with uploaded documents
-      const { error: updateError } = await (supabase as any)
+      const { error: updateError } = await supabase
         .from('overseas_company_requests')
         .update({
           uploaded_documents: uploadedFiles,

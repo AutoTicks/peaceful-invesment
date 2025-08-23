@@ -113,6 +113,105 @@ export type Database = {
         }
         Relationships: []
       }
+      overseas_companies: {
+        Row: {
+          company_name: string
+          contact_email: string
+          contact_phone: string | null
+          created_at: string
+          id: string
+          incorporation_date: string
+          jurisdiction: string
+          registration_number: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_name: string
+          contact_email: string
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          incorporation_date: string
+          jurisdiction: string
+          registration_number: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_name?: string
+          contact_email?: string
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          incorporation_date?: string
+          jurisdiction?: string
+          registration_number?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      overseas_company_requests: {
+        Row: {
+          admin_notes: string | null
+          business_description: string | null
+          business_type: string
+          company_names: string[]
+          contact_email: string
+          created_at: string
+          documents_requested: string[] | null
+          estimated_completion: string | null
+          id: string
+          jurisdiction: string
+          selected_company_name: string | null
+          status: string
+          submitted_at: string
+          updated_at: string
+          uploaded_documents: Json | null
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          business_description?: string | null
+          business_type: string
+          company_names: string[]
+          contact_email: string
+          created_at?: string
+          documents_requested?: string[] | null
+          estimated_completion?: string | null
+          id?: string
+          jurisdiction: string
+          selected_company_name?: string | null
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          uploaded_documents?: Json | null
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          business_description?: string | null
+          business_type?: string
+          company_names?: string[]
+          contact_email?: string
+          created_at?: string
+          documents_requested?: string[] | null
+          estimated_completion?: string | null
+          id?: string
+          jurisdiction?: string
+          selected_company_name?: string | null
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          uploaded_documents?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
