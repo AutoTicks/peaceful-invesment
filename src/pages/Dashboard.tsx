@@ -84,7 +84,7 @@ const Dashboard = () => {
                 <p className="text-xs text-muted-foreground">
                   {stat.description}
                 </p>
-                <div className="text-xs text-accent-green mt-1">
+                <div className="text-xs text-primary mt-1">
                   {stat.trend} from last month
                 </div>
               </CardContent>
@@ -114,7 +114,7 @@ const Dashboard = () => {
                       <p className="text-sm text-muted-foreground">{bot.status}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-accent-green">{bot.profit}</p>
+                      <p className="font-medium text-primary">{bot.profit}</p>
                       <p className="text-sm text-muted-foreground">24h</p>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ const Dashboard = () => {
                       <p className="text-sm text-muted-foreground">{activity.time}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-accent-green">{activity.result}</p>
+                      <p className="font-medium text-primary">{activity.result}</p>
                     </div>
                   </div>
                 ))}

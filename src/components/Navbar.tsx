@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +50,7 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {user ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-muted-foreground">
@@ -96,6 +98,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="px-3 py-2 space-y-2">
+                <ThemeToggle />
                 {user ? (
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">

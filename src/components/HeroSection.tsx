@@ -30,13 +30,13 @@ const HeroSection = () => {
       
       {/* Floating Trading Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-accent-cyan/10 rounded-full blur-xl animate-float" />
-        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-accent-green/10 rounded-full blur-lg animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-accent-cyan/15 rounded-full blur-md animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-xl animate-float" />
+        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-primary/10 rounded-full blur-lg animate-float" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-primary/15 rounded-full blur-md animate-float" style={{ animationDelay: '2s' }} />
         
         {/* Trading symbols floating */}
-        <div className="absolute top-20 right-20 text-accent-cyan/20 text-4xl animate-float" style={{ animationDelay: '0.5s' }}>$</div>
-        <div className="absolute bottom-20 left-20 text-accent-green/20 text-3xl animate-float" style={{ animationDelay: '1.5s' }}>₿</div>
+        <div className="absolute top-20 right-20 text-primary/20 text-4xl animate-float" style={{ animationDelay: '0.5s' }}>$</div>
+        <div className="absolute bottom-20 left-20 text-primary/20 text-3xl animate-float" style={{ animationDelay: '1.5s' }}>₿</div>
       </div>
 
       {/* Content */}
@@ -47,13 +47,13 @@ const HeroSection = () => {
             {/* Bot Icon */}
             <div className="mb-8 animate-slide-up">
               <div className="w-20 h-20 mx-auto lg:mx-0 mb-6 glass rounded-3xl flex items-center justify-center">
-                <Bot className="w-10 h-10 text-accent-cyan" />
+                <Bot className="w-10 h-10 text-primary" />
               </div>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              Control Your <span className="text-gradient bg-gradient-to-r from-accent-cyan to-accent-green bg-clip-text text-transparent">Investment Bots</span> from Anywhere
+              Control Your <span className="text-gradient bg-gradient-to-r from-primary to-primary-muted bg-clip-text text-transparent">Investment Bots</span> from Anywhere
             </h1>
 
             {/* Subtitle */}
@@ -89,7 +89,7 @@ const HeroSection = () => {
             </div>
 
             {/* Auto-detect Note */}
-            <p className="text-accent-cyan/80 mt-6 animate-fade-in flex items-center gap-2" style={{ animationDelay: '0.8s' }}>
+            <p className="text-primary/80 mt-6 animate-fade-in flex items-center gap-2" style={{ animationDelay: '0.8s' }}>
               <TrendingUp className="w-4 h-4" />
               Detected OS: <span className="font-semibold text-white">{detectOS()}</span> • Works with MT4 & MT5
             </p>
@@ -107,11 +107,11 @@ const HeroSection = () => {
               </div>
               {/* Floating metrics */}
               <div className="absolute -top-4 -right-4 glass-card p-4 animate-float">
-                <div className="text-accent-green text-sm font-semibold">+1,247 USD</div>
+                <div className="text-primary text-sm font-semibold">+1,247 USD</div>
                 <div className="text-white/70 text-xs">Today's Profit</div>
               </div>
               <div className="absolute -bottom-4 -left-4 glass-card p-4 animate-float" style={{ animationDelay: '1s' }}>
-                <div className="text-accent-cyan text-sm font-semibold">94.2%</div>
+                <div className="text-primary text-sm font-semibold">94.2%</div>
                 <div className="text-white/70 text-xs">Win Rate</div>
               </div>
             </div>

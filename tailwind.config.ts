@@ -29,7 +29,7 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					light: 'hsl(var(--primary-light))',
+					muted: 'hsl(var(--primary-muted))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
@@ -37,8 +37,7 @@ export default {
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				accent: {
-					green: 'hsl(var(--accent-green))',
-					orange: 'hsl(var(--accent-orange))',
+					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
 				muted: {
@@ -48,6 +47,10 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				destructive: {
+					DEFAULT: 'hsl(var(--destructive))',
+					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				glass: {
 					bg: 'hsl(var(--glass-bg))',
