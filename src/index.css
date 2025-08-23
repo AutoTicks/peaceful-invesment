@@ -154,7 +154,7 @@
 
   /* Feature Cards */
   .feature-card {
-    @apply glass-card hover:scale-105 transition-all duration-300 cursor-pointer group;
+    @apply glass-card hover:scale-105 transition-all duration-300 cursor-pointer;
   }
 
   /* Smooth Animations */

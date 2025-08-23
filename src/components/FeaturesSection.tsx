@@ -43,7 +43,7 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="feature-card text-center"
+              className="feature-card group text-center"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="mb-6">
