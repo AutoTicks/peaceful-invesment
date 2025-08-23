@@ -35,6 +35,13 @@ export interface FormData {
   // Employment Information
   employmentStatus: string;
   employer: string;
+  employerCountry: string;
+  employerAddressLine1: string;
+  employerAddressLine2: string;
+  employerCity: string;
+  employerState: string;
+  employerZip: string;
+  businessNature: string;
   occupation: string;
   
   // Financial Status
@@ -76,6 +83,13 @@ const CreateAccount = () => {
     zipCode: "",
     employmentStatus: "",
     employer: "",
+    employerCountry: "",
+    employerAddressLine1: "",
+    employerAddressLine2: "",
+    employerCity: "",
+    employerState: "",
+    employerZip: "",
+    businessNature: "",
     occupation: "",
     annualIncome: 0,
     netWorth: 0,
@@ -128,8 +142,17 @@ const CreateAccount = () => {
         break;
       case 3:
         if (!formData.employmentStatus) errors.push("Employment status is required");
-        if (formData.employmentStatus === "employed" && !formData.employer.trim()) {
-          errors.push("Employer is required");
+        if (["employed", "part-time"].includes(formData.employmentStatus)) {
+          if (!formData.employer.trim()) errors.push("Employer name is required");
+          if (!formData.employerCountry) errors.push("Employer country is required");
+          if (!formData.employerAddressLine1.trim()) errors.push("Employer address is required");
+          if (!formData.employerCity.trim()) errors.push("Employer city is required");
+          if (!formData.employerState.trim()) errors.push("Employer state/province is required");
+          if (!formData.employerZip.trim()) errors.push("Employer ZIP/postal code is required");
+          if (!formData.occupation.trim()) errors.push("Job title/occupation is required");
+        }
+        if (formData.employmentStatus === "self-employed" && !formData.businessNature) {
+          errors.push("Nature of business is required");
         }
         break;
       case 4:
