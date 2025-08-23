@@ -16,28 +16,67 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          address: string | null
+          annual_income: number | null
           avatar_url: string | null
+          city: string | null
           created_at: string
+          documents_uploaded: boolean | null
+          employer: string | null
+          employment_status: string | null
           full_name: string | null
+          has_completed_profile: boolean
           id: string
+          investment_experience: string | null
+          investment_goals: string[] | null
+          phone: string | null
+          risk_tolerance: string | null
+          state: string | null
           updated_at: string
           user_id: string
+          zip_code: string | null
         }
         Insert: {
+          address?: string | null
+          annual_income?: number | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
+          documents_uploaded?: boolean | null
+          employer?: string | null
+          employment_status?: string | null
           full_name?: string | null
+          has_completed_profile?: boolean
           id?: string
+          investment_experience?: string | null
+          investment_goals?: string[] | null
+          phone?: string | null
+          risk_tolerance?: string | null
+          state?: string | null
           updated_at?: string
           user_id: string
+          zip_code?: string | null
         }
         Update: {
+          address?: string | null
+          annual_income?: number | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
+          documents_uploaded?: boolean | null
+          employer?: string | null
+          employment_status?: string | null
           full_name?: string | null
+          has_completed_profile?: boolean
           id?: string
+          investment_experience?: string | null
+          investment_goals?: string[] | null
+          phone?: string | null
+          risk_tolerance?: string | null
+          state?: string | null
           updated_at?: string
           user_id?: string
+          zip_code?: string | null
         }
         Relationships: []
       }

@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -59,13 +59,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    return { error };
+    return { error, data };
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    return { error };
+    return { error, data };
   };
 
   const signOut = async () => {
