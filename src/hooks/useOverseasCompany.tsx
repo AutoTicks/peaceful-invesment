@@ -35,11 +35,11 @@ export interface CompanyInfo {
 }
 
 export interface RequestFormData {
-  companyNames: string[];
+  company_names: string[];
   jurisdiction: string;
-  businessType: string;
-  businessDescription?: string;
-  contactEmail: string;
+  business_type: string;
+  business_description?: string;
+  contact_email: string;
 }
 
 export const useOverseasCompany = () => {
@@ -55,7 +55,7 @@ export const useOverseasCompany = () => {
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('overseas_company_requests')
         .select('*')
         .eq('user_id', user.id)
@@ -75,7 +75,7 @@ export const useOverseasCompany = () => {
     if (!user?.id) return;
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('overseas_companies')
         .select('*')
         .eq('user_id', user.id)
@@ -94,15 +94,15 @@ export const useOverseasCompany = () => {
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('overseas_company_requests')
         .insert({
           user_id: user.id,
-          company_names: formData.companyNames,
+          company_names: formData.company_names,
           jurisdiction: formData.jurisdiction,
-          business_type: formData.businessType,
-          business_description: formData.businessDescription,
-          contact_email: formData.contactEmail,
+          business_type: formData.business_type,
+          business_description: formData.business_description,
+          contact_email: formData.contact_email,
           status: 'pending',
           submitted_at: new Date().toISOString()
         })
@@ -149,7 +149,7 @@ export const useOverseasCompany = () => {
       }
 
       // Update request with uploaded documents
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('overseas_company_requests')
         .update({
           uploaded_documents: uploadedFiles,

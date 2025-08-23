@@ -94,11 +94,11 @@ const OverseasCompany = () => {
 
     try {
       await submitRequest({
-        companyNames,
+        company_names: companyNames,
         jurisdiction: formData.jurisdiction,
-        businessType: formData.businessType,
-        businessDescription: formData.businessDescription,
-        contactEmail: formData.contactEmail
+        business_type: formData.businessType,
+        business_description: formData.businessDescription,
+        contact_email: formData.contactEmail
       });
 
       toast({
@@ -378,10 +378,10 @@ const OverseasCompany = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <h3 className="font-semibold text-lg">
-                          {currentRequest.companyNames[0]}
+                          {currentRequest.company_names[0]}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {currentRequest.jurisdiction} • {currentRequest.businessType}
+                          {currentRequest.jurisdiction} • {currentRequest.business_type}
                         </p>
                       </div>
                       <Badge className={getStatusColor(currentRequest.status)}>
@@ -394,33 +394,33 @@ const OverseasCompany = () => {
                       <div>
                         <Label className="text-sm font-medium">Submitted</Label>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(currentRequest.submittedAt).toLocaleDateString()}
+                          {new Date(currentRequest.submitted_at).toLocaleDateString()}
                         </p>
                       </div>
                       
-                      {currentRequest.estimatedCompletion && (
+                      {currentRequest.estimated_completion && (
                         <div>
                           <Label className="text-sm font-medium">Estimated Completion</Label>
                           <p className="text-sm text-muted-foreground">
-                            {new Date(currentRequest.estimatedCompletion).toLocaleDateString()}
+                            {new Date(currentRequest.estimated_completion).toLocaleDateString()}
                           </p>
                         </div>
                       )}
 
-                      {currentRequest.adminNotes && (
+                      {currentRequest.admin_notes && (
                         <div>
                           <Label className="text-sm font-medium">Admin Notes</Label>
                           <p className="text-sm text-muted-foreground">
-                            {currentRequest.adminNotes}
+                            {currentRequest.admin_notes}
                           </p>
                         </div>
                       )}
 
-                      {currentRequest.documentsRequested && currentRequest.documentsRequested.length > 0 && (
+                      {currentRequest.documents_requested && currentRequest.documents_requested.length > 0 && (
                         <div>
                           <Label className="text-sm font-medium">Documents Requested</Label>
                           <ul className="text-sm text-muted-foreground list-disc list-inside">
-                            {currentRequest.documentsRequested.map((doc, index) => (
+                            {currentRequest.documents_requested.map((doc, index) => (
                               <li key={index}>{doc}</li>
                             ))}
                           </ul>
@@ -486,19 +486,19 @@ const OverseasCompany = () => {
                         <CardContent className="pt-6">
                           <div className="flex justify-between items-start">
                             <div>
-                              <h3 className="font-semibold text-lg mb-1">
-                                {company.companyName}
-                              </h3>
-                              <p className="text-sm text-muted-foreground mb-2">
-                                Registration: {company.registrationNumber}
-                              </p>
-                              <div className="grid grid-cols-2 gap-4 text-sm">
-                                <div>
-                                  <Label className="font-medium">Incorporation Date</Label>
-                                  <p className="text-muted-foreground">
-                                    {new Date(company.incorporationDate).toLocaleDateString()}
-                                  </p>
-                                </div>
+                               <h3 className="font-semibold text-lg mb-1">
+                                {company.company_name}
+                               </h3>
+                               <p className="text-sm text-muted-foreground mb-2">
+                                Registration: {company.registration_number}
+                               </p>
+                               <div className="grid grid-cols-2 gap-4 text-sm">
+                                 <div>
+                                   <Label className="font-medium">Incorporation Date</Label>
+                                   <p className="text-muted-foreground">
+                                     {new Date(company.incorporation_date).toLocaleDateString()}
+                                   </p>
+                                 </div>
                                 <div>
                                   <Label className="font-medium">Jurisdiction</Label>
                                   <p className="text-muted-foreground">{company.jurisdiction}</p>
@@ -509,10 +509,10 @@ const OverseasCompany = () => {
                                     {company.status}
                                   </Badge>
                                 </div>
-                                <div>
-                                  <Label className="font-medium">Contact</Label>
-                                  <p className="text-muted-foreground">{company.contactEmail}</p>
-                                </div>
+                                 <div>
+                                   <Label className="font-medium">Contact</Label>
+                                   <p className="text-muted-foreground">{company.contact_email}</p>
+                                 </div>
                               </div>
                             </div>
                           </div>
