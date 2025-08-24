@@ -402,6 +402,48 @@ export type Database = {
         }
         Relationships: []
       }
+      requests: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          payment_method: string
+          status: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          payment_method: string
+          status?: string
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          payment_method?: string
+          status?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       verification_requests: {
         Row: {
           created_at: string

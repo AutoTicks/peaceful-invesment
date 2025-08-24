@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: "Trading Accounts", href: "/meta-trader-accounts" },
     { name: "Overseas Company", href: "/overseas-company" },
     { name: "Referrals", href: "/referrals" },
+    { name: "Requests", href: "/requests" },
     { name: "Verification", href: "/verification" },
     { name: "Profile", href: "/profile" },
   ] : [
