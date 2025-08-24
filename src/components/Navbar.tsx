@@ -26,10 +26,10 @@ const Navbar = () => {
     { name: "Profile", href: "/profile" },
   ] : [
     { name: "Home", href: "/" },
+    { name: "Downloads", href: "/downloads" },
     { name: "Features", href: "/#features" },
-    { name: "Pricing", href: "/#pricing" },
-    { name: "Docs", href: "/#docs" },
-    { name: "Support", href: "/#support" },
+    { name: "About", href: "/#about" },
+    { name: "Contact", href: "/#contact" },
   ];
 
   return (

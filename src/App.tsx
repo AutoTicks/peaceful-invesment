@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import RouteGuard from "@/components/RouteGuard";
 import Index from "./pages/Index";
+import Downloads from "./pages/Downloads";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import CreateAccount from "./pages/CreateAccount";
@@ -39,6 +40,7 @@ function App() {
                 <Navbar />
                 <Routes>
                   <Route path="/" element={<Index />} />
+                  <Route path="/downloads" element={<Downloads />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/create-account" element={<CreateAccount />} />
                   <Route path="/dashboard" element={<Dashboard />} />

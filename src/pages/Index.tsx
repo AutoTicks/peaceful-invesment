@@ -1,20 +1,20 @@
-import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import DownloadSection from "@/components/DownloadSection";
-import InstallGuide from "@/components/InstallGuide";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import FAQSection from "@/components/FAQSection";
+import LandingHero from "@/components/landing/LandingHero";
+import LandingFeatures from "@/components/landing/LandingFeatures";
+import LandingServices from "@/components/landing/LandingServices";
+import LandingTestimonials from "@/components/landing/LandingTestimonials";
+import LandingFAQ from "@/components/landing/LandingFAQ";
+import LandingCTA from "@/components/landing/LandingCTA";
 import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen pt-16">
-      <HeroSection />
-      <FeaturesSection />
-      <DownloadSection />
-      <InstallGuide />
-      <TestimonialsSection />
-      <FAQSection />
+      <LandingHero />
+      <LandingFeatures />
+      <LandingServices />
+      <LandingTestimonials />
+      <LandingFAQ />
+      <LandingCTA />
       <Footer />
     </div>
   );
