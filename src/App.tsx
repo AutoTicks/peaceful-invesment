@@ -14,6 +14,7 @@ import VerificationCenter from "./pages/VerificationCenter";
 import MetaTraderAccounts from "./pages/MetaTraderAccounts";
 import OverseasCompany from "./pages/OverseasCompany";
 import Referrals from "./pages/Referrals";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
                 <Route path="/meta-trader-accounts" element={<MetaTraderAccounts />} />
                 <Route path="/overseas-company" element={<OverseasCompany />} />
                 <Route path="/referrals" element={<Referrals />} />
+                <Route path="/profile" element={<Profile />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

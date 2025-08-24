@@ -21,6 +21,7 @@ const Navbar = () => {
     { name: "Overseas Company", href: "/overseas-company" },
     { name: "Referrals", href: "/referrals" },
     { name: "Verification", href: "/verification" },
+    { name: "Profile", href: "/profile" },
   ] : [
     { name: "Home", href: "/" },
     { name: "Features", href: "/#features" },
