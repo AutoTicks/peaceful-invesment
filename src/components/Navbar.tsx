@@ -8,13 +8,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, X, Shield, ChevronDown, User, Settings, LogOut, Shield as VerificationIcon } from "lucide-react";
+import { Menu, X, Shield, ChevronDown, User, Settings, LogOut, Shield as VerificationIcon, Edit } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useUserRole } from "@/hooks/useUserRole";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { isAdmin } = useUserRole();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -117,6 +119,14 @@ const Navbar = () => {
                         Verification Center
                       </Link>
                     </DropdownMenuItem>
+                    {isAdmin() && (
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin/blog" className="flex items-center gap-2 w-full cursor-pointer">
+                          <Edit className="h-4 w-4" />
+                          Blog Admin
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       onClick={handleSignOut}
@@ -202,6 +212,15 @@ const Navbar = () => {
                   >
                     Verification Center
                   </Link>
+                  {isAdmin() && (
+                    <Link
+                      to="/admin/blog"
+                      className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Blog Admin
+                    </Link>
+                  )}
                 </>
               )}
               

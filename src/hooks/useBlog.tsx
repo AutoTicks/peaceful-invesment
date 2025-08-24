@@ -143,12 +143,9 @@ export const useBlog = () => {
 
   const incrementViewCount = async (id: string) => {
     try {
-      const { data, error } = await supabase
-        .from('blog_posts')
-        .update({ view_count: 1 })
-        .eq('id', id)
-        .select('view_count')
-        .single();
+      const { error } = await supabase.rpc('increment_blog_view_count', {
+        post_id: id
+      });
 
       if (error) throw error;
     } catch (error) {
