@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, TrendingUp, Activity, DollarSign } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Shield, TrendingUp, Activity, DollarSign, BarChart3, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
@@ -91,6 +93,62 @@ const Dashboard = () => {
             </Card>
           ))}
         </div>
+
+        {/* Trading Platform Access */}
+        <Card className="mb-8 bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Professional Trading Platform</CardTitle>
+                  <CardDescription className="text-base">
+                    Access advanced charts, real-time data, and professional trading tools
+                  </CardDescription>
+                </div>
+              </div>
+              <Link to="/trading">
+                <Button size="lg" className="gap-2">
+                  Launch Trading Platform
+                  <ExternalLink className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3 p-3 bg-background/50 rounded-lg">
+                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Real-time Charts</p>
+                  <p className="text-sm text-muted-foreground">Advanced technical analysis</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-background/50 rounded-lg">
+                <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <Activity className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Live Trading</p>
+                  <p className="text-sm text-muted-foreground">Execute trades instantly</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-background/50 rounded-lg">
+                <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                  <DollarSign className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Portfolio Management</p>
+                  <p className="text-sm text-muted-foreground">Track your investments</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Bot Management */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
