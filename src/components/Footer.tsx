@@ -47,7 +47,7 @@ const Footer = () => {
               <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center">
                 <Bot className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold">MetaTrader Bot Manager</span>
+              <span className="text-2xl font-bold">Peaceful Investment</span>
             </div>
             <p className="text-secondary-foreground/80 leading-relaxed mb-6 max-w-sm">
               The ultimate solution for managing and monitoring your MetaTrader 
@@ -209,7 +209,7 @@ const Footer = () => {
         <div className="border-t border-secondary-foreground/20 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-sm text-secondary-foreground/60">
-              © 2024 MetaTrader Bot Manager. All rights reserved.
+              © 2024 Peaceful Investment. All rights reserved.
             </div>
             
             <div className="flex items-center gap-6 text-sm text-secondary-foreground/60">

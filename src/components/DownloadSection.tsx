@@ -33,7 +33,7 @@ const DownloadSection = () => {
   ];
 
   const handleDownload = (os: string) => {
-    console.log(`Downloading MetaTrader Bot Manager for ${os}`);
+    console.log(`Downloading Peaceful Investment for ${os}`);
   };
 
   return (
@@ -45,7 +45,7 @@ const DownloadSection = () => {
             Download the App for <span className="text-gradient">Your Platform</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Get started with MetaTrader Bot Manager on your preferred operating system. 
+            Get started with Peaceful Investment on your preferred operating system. 
             All platforms receive simultaneous updates and feature parity.
           </p>
         </div>
@@ -71,7 +71,7 @@ const DownloadSection = () => {
                   <download.icon className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-foreground">
-                  MetaTrader Bot Manager
+                  Peaceful Investment
                 </h3>
                 <p className="text-sm text-muted-foreground">for {download.os}</p>
               </div>

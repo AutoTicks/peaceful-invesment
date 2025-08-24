@@ -62,7 +62,7 @@ const TestimonialsSection = () => {
             Trusted by <span className="text-gradient">Professional Traders</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join thousands of successful traders who rely on MetaTrader Bot Manager 
+            Join thousands of successful traders who rely on Peaceful Investment 
             to optimize their automated trading strategies and maximize profits.
           </p>
         </div>

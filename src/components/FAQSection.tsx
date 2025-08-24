@@ -9,7 +9,7 @@ const FAQSection = () => {
   const faqs = [
     {
       question: "Does it work with both MT4 and MT5?",
-      answer: "Yes! MetaTrader Bot Manager supports both MetaTrader 4 and MetaTrader 5 platforms. It automatically detects your terminal version and adapts the interface accordingly. You can manage Expert Advisors, custom indicators, and trading signals from both platforms simultaneously."
+      answer: "Yes! Peaceful Investment supports both MetaTrader 4 and MetaTrader 5 platforms. It automatically detects your terminal version and adapts the interface accordingly. You can manage Expert Advisors, custom indicators, and trading signals from both platforms simultaneously."
     },
     {
       question: "Is my trading data safe and secure?",
@@ -50,7 +50,7 @@ const FAQSection = () => {
             Frequently Asked <span className="text-gradient">Questions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Get answers to common questions about MetaTrader Bot Manager. 
+            Get answers to common questions about Peaceful Investment. 
             Our comprehensive FAQ covers setup, security, functionality, and best practices.
           </p>
         </div>
@@ -117,7 +117,7 @@ const FAQSection = () => {
         {/* Contact CTA */}
         <div className="mt-16 text-center glass-card">
           <h3 className="text-xl font-semibold text-foreground mb-4">
-            Still have questions about MetaTrader Bot Manager?
+            Still have questions about Peaceful Investment?
           </h3>
           <p className="text-muted-foreground mb-6">
             Our trading experts are here to help you optimize your automated trading setup.

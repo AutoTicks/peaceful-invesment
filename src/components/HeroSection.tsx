@@ -101,7 +101,7 @@ const HeroSection = () => {
               <div className="glass-card p-4">
                 <img 
                   src={dashboardMockup} 
-                  alt="MetaTrader Bot Manager Dashboard" 
+                  alt="Peaceful Investment Dashboard" 
                   className="w-full h-auto rounded-xl shadow-2xl"
                 />
               </div>

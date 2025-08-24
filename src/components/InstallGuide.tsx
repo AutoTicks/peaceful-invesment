@@ -42,7 +42,7 @@ const InstallGuide = () => {
       {
         step: 2,
         title: "Install the application",
-        description: "Open the .dmg file and drag MetaTrader Bot Manager to your Applications folder. You may need to allow apps from identified developers in Security & Privacy settings.",
+        description: "Open the .dmg file and drag Peaceful Investment to your Applications folder. You may need to allow apps from identified developers in Security & Privacy settings.",
         icon: "📁"
       },
       {
@@ -95,7 +95,7 @@ const InstallGuide = () => {
             Get Started in <span className="text-gradient">3 Easy Steps</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Setting up MetaTrader Bot Manager is quick and straightforward. 
+            Setting up Peaceful Investment is quick and straightforward. 
             Follow our step-by-step guide to start controlling your trading bots within minutes.
           </p>
         </div>
