@@ -402,6 +402,53 @@ export type Database = {
         }
         Relationships: []
       }
+      request_documents: {
+        Row: {
+          description: string | null
+          document_type: string
+          file_size: number
+          file_type: string
+          file_url: string
+          filename: string
+          id: string
+          request_id: string
+          uploaded_at: string
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          document_type: string
+          file_size: number
+          file_type: string
+          file_url: string
+          filename: string
+          id?: string
+          request_id: string
+          uploaded_at?: string
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          document_type?: string
+          file_size?: number
+          file_type?: string
+          file_url?: string
+          filename?: string
+          id?: string
+          request_id?: string
+          uploaded_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_documents_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       requests: {
         Row: {
           admin_notes: string | null

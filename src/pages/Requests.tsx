@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, DollarSign, TrendingUp, Clock, CheckCircle } from "lucide-react";
-import RequestForm from "@/components/requests/RequestForm";
-import RequestsList from "@/components/requests/RequestsList";
+import RequestFormEnhanced from "@/components/requests/RequestFormEnhanced";
+import RequestsListEnhanced from "@/components/requests/RequestsListEnhanced";
 import { useRequests } from "@/hooks/useRequests";
 
 const Requests = () => {
@@ -90,12 +90,12 @@ const Requests = () => {
           </div>
 
           <TabsContent value="requests" className="space-y-6">
-            <RequestsList />
+            <RequestsListEnhanced />
           </TabsContent>
 
           <TabsContent value="new" className="space-y-6">
             <div className="flex justify-center">
-              <RequestForm onSuccess={() => setShowForm(false)} />
+              <RequestFormEnhanced onSuccess={() => setShowForm(false)} />
             </div>
           </TabsContent>
         </Tabs>
@@ -111,7 +111,7 @@ const Requests = () => {
               >
                 Close
               </Button>
-              <RequestForm onSuccess={() => setShowForm(false)} />
+              <RequestFormEnhanced onSuccess={() => setShowForm(false)} />
             </div>
           </div>
         )}
