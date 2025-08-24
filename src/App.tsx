@@ -9,6 +9,9 @@ import Navbar from "@/components/Navbar";
 import RouteGuard from "@/components/RouteGuard";
 import Index from "./pages/Index";
 import Downloads from "./pages/Downloads";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./pages/AdminBlog";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import CreateAccount from "./pages/CreateAccount";
@@ -41,6 +44,9 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/downloads" element={<Downloads />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/admin/blog" element={<AdminBlog />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/create-account" element={<CreateAccount />} />
                   <Route path="/dashboard" element={<Dashboard />} />
