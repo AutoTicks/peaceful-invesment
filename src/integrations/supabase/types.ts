@@ -59,6 +59,51 @@ export type Database = {
           },
         ]
       }
+      fee_structures: {
+        Row: {
+          created_at: string
+          currency: string
+          fee_type: string
+          fee_value: number
+          id: string
+          is_active: boolean
+          maximum_fee: number | null
+          minimum_fee: number | null
+          payment_method: string
+          request_type: string
+          tier_thresholds: Json | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          fee_type: string
+          fee_value: number
+          id?: string
+          is_active?: boolean
+          maximum_fee?: number | null
+          minimum_fee?: number | null
+          payment_method: string
+          request_type: string
+          tier_thresholds?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          fee_type?: string
+          fee_value?: number
+          id?: string
+          is_active?: boolean
+          maximum_fee?: number | null
+          minimum_fee?: number | null
+          payment_method?: string
+          request_type?: string
+          tier_thresholds?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       metatrader_accounts: {
         Row: {
           account_type: string
@@ -402,6 +447,56 @@ export type Database = {
         }
         Relationships: []
       }
+      request_audit_log: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          new_values: Json | null
+          old_values: Json | null
+          reason: string | null
+          request_id: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          new_values?: Json | null
+          old_values?: Json | null
+          reason?: string | null
+          request_id: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          new_values?: Json | null
+          old_values?: Json | null
+          reason?: string | null
+          request_id?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_audit_log_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       request_documents: {
         Row: {
           description: string | null
@@ -453,10 +548,13 @@ export type Database = {
         Row: {
           admin_notes: string | null
           amount: number
+          calculated_fee: number | null
           created_at: string
           currency: string
           description: string | null
+          fee_breakdown: Json | null
           id: string
+          net_amount: number | null
           payment_method: string
           status: string
           type: string
@@ -466,10 +564,13 @@ export type Database = {
         Insert: {
           admin_notes?: string | null
           amount: number
+          calculated_fee?: number | null
           created_at?: string
           currency?: string
           description?: string | null
+          fee_breakdown?: Json | null
           id?: string
+          net_amount?: number | null
           payment_method: string
           status?: string
           type: string
@@ -479,10 +580,13 @@ export type Database = {
         Update: {
           admin_notes?: string | null
           amount?: number
+          calculated_fee?: number | null
           created_at?: string
           currency?: string
           description?: string | null
+          fee_breakdown?: Json | null
           id?: string
+          net_amount?: number | null
           payment_method?: string
           status?: string
           type?: string
@@ -543,6 +647,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_request_fee: {
+        Args: {
+          p_amount: number
+          p_currency?: string
+          p_payment_method: string
+          p_request_type: string
+        }
+        Returns: {
+          fee_amount: number
+          fee_breakdown: Json
+          net_amount: number
+        }[]
+      }
       generate_referral_code: {
         Args: { first_name: string }
         Returns: string

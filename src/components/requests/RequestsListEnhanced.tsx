@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, DollarSign, CreditCard, Clock, CheckCircle, XCircle, AlertCircle, FileText, User, Calendar, MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import DocumentUpload from "./DocumentUpload";
+import AuditTrail from "./AuditTrail";
+import RequestFilters from "./RequestFilters";
 
 interface RequestDocument {
   id: string;
@@ -58,6 +60,7 @@ const RequestsListEnhanced = () => {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [requestDocuments, setRequestDocuments] = useState<RequestDocument[]>([]);
   const [loadingDocuments, setLoadingDocuments] = useState(false);
+  const [filteredRequests, setFilteredRequests] = useState<Request[]>(requests);
 
   const fetchRequestDocuments = async (requestId: string) => {
     setLoadingDocuments(true);
@@ -127,17 +130,19 @@ const RequestsListEnhanced = () => {
 
   if (requests.length === 0) {
     return (
-      <Card>
-        <CardContent className="pt-6">
-          <div className="text-center py-8">
-            <DollarSign className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">No requests yet</h3>
-            <p className="text-muted-foreground">
-              Create your first deposit or withdrawal request to get started.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="space-y-6">
+        <RequestFilters 
+          requests={requests}
+          onFilteredRequestsChange={setFilteredRequests}
+        />
+        <div className="text-center py-8">
+          <DollarSign className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-medium text-foreground mb-2">No requests yet</h3>
+          <p className="text-muted-foreground">
+            Create your first deposit or withdrawal request to get started.
+          </p>
+        </div>
+      </div>
     );
   }
 
@@ -158,9 +163,9 @@ const RequestsListEnhanced = () => {
           </Button>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-3">
           {/* Request Information */}
-          <Card>
+          <Card className="lg:col-span-2">{/* Request details content remains the same */}
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 {selectedRequest.type === 'deposit' ? (
@@ -184,6 +189,16 @@ const RequestsListEnhanced = () => {
                 <span className="text-muted-foreground">Amount</span>
                 <span className="font-semibold text-lg">
                   {selectedRequest.amount.toLocaleString()} {selectedRequest.currency}
+                  {(selectedRequest as any).calculated_fee !== undefined && (selectedRequest as any).calculated_fee > 0 && (
+                    <span className="text-sm text-muted-foreground block">
+                      Fee: {((selectedRequest as any).calculated_fee).toLocaleString()} {selectedRequest.currency}
+                    </span>
+                  )}
+                  {(selectedRequest as any).net_amount !== undefined && (selectedRequest as any).net_amount !== selectedRequest.amount && (
+                    <span className="text-sm text-green-600 block">
+                      Net: {((selectedRequest as any).net_amount).toLocaleString()} {selectedRequest.currency}
+                    </span>
+                  )}
                 </span>
               </div>
 
@@ -271,14 +286,33 @@ const RequestsListEnhanced = () => {
               )}
             </CardContent>
           </Card>
+
+          {/* Audit Trail */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                Activity Log
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AuditTrail requestId={selectedRequest.id} />
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      {requests.map((request) => (
+    <div className="space-y-6">
+      <RequestFilters 
+        requests={requests}
+        onFilteredRequestsChange={setFilteredRequests}
+      />
+      
+      <div className="space-y-4">
+        {filteredRequests.map((request) => (
         <Card 
           key={request.id} 
           className="hover:shadow-md transition-shadow cursor-pointer"
@@ -348,7 +382,8 @@ const RequestsListEnhanced = () => {
             </div>
           </CardContent>
         </Card>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

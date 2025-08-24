@@ -12,6 +12,9 @@ export interface Request {
   status: 'pending' | 'processing' | 'completed' | 'rejected';
   description?: string;
   admin_notes?: string;
+  calculated_fee?: number;
+  net_amount?: number;
+  fee_breakdown?: any;
   created_at: string;
   updated_at: string;
 }

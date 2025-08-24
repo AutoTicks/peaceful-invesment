@@ -12,6 +12,7 @@ import { useRequests } from "@/hooks/useRequests";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, DollarSign, CreditCard, Upload } from "lucide-react";
 import DocumentUpload from "./DocumentUpload";
+import FeeCalculator from "./FeeCalculator";
 
 const requestSchema = z.object({
   type: z.enum(['deposit', 'withdrawal'], { required_error: "Please select a request type" }),
@@ -33,6 +34,8 @@ const RequestForm = ({ onSuccess }: RequestFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [createdRequestId, setCreatedRequestId] = useState<string | null>(null);
+  const [calculatedFee, setCalculatedFee] = useState<number>(0);
+  const [netAmount, setNetAmount] = useState<number>(0);
 
   const form = useForm<RequestFormValues>({
     resolver: zodResolver(requestSchema),
@@ -46,6 +49,9 @@ const RequestForm = ({ onSuccess }: RequestFormProps) => {
   });
 
   const requestType = form.watch('type');
+  const selectedAmount = form.watch('amount');
+  const selectedPaymentMethod = form.watch('payment_method');
+  const selectedCurrency = form.watch('currency');
 
   const depositMethods = [
     'Bank Transfer',
@@ -77,14 +83,21 @@ const RequestForm = ({ onSuccess }: RequestFormProps) => {
   const paymentMethods = requestType === 'deposit' ? depositMethods : withdrawalMethods;
 
   const onSubmit = async (data: RequestFormValues) => {
+    const submitData = {
+      ...data,
+      calculated_fee: calculatedFee,
+      net_amount: netAmount,
+    } as any;
     setIsSubmitting(true);
     try {
-      const result = await createRequest(data as {
+      const result = await createRequest(submitData as {
         type: 'deposit' | 'withdrawal';
         amount: number;
         currency: string;
         payment_method: string;
         description?: string;
+        calculated_fee?: number;
+        net_amount?: number;
       });
       
       if (result.error) {
