@@ -26,6 +26,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ForgotUsername from "./pages/ForgotUsername";
 import ResetPassword from "./pages/ResetPassword";
 import TradingDashboard from "./pages/TradingDashboard";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,7 +39,12 @@ function App() {
         <AuthProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true
+            }}
+          >
             <RouteGuard>
               <div className="min-h-screen w-full">
                 <Navbar />
@@ -61,6 +68,8 @@ function App() {
                   <Route path="/forgot-username" element={<ForgotUsername />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/trading" element={<TradingDashboard />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/about" element={<About />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

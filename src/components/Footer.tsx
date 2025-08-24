@@ -3,6 +3,7 @@ import { Github, Twitter, Mail, MessageSquare, Globe, Shield, FileText, Bot } fr
 const Footer = () => {
   const footerLinks = {
     product: [
+      { name: "About", href: "/about" },
       { name: "Features", href: "#" },
       { name: "Pricing", href: "#" },
       { name: "System Requirements", href: "#" },
@@ -12,7 +13,7 @@ const Footer = () => {
       { name: "Documentation", href: "#" },
       { name: "Video Tutorials", href: "#" },
       { name: "Community Forum", href: "#" },
-      { name: "Contact Support", href: "#" },
+      { name: "Contact Support", href: "/contact" },
     ],
     resources: [
       { name: "Trading Guides", href: "#" },

@@ -31,12 +31,14 @@ const Navbar = () => {
     { name: "Accounts", href: "/meta-trader-accounts" },
     { name: "Referrals", href: "/referrals" },
     { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ] : [
     { name: "Home", href: "/" },
     { name: "Downloads", href: "/downloads" },
     { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
+    { name: "About", href: "/about" },
     { name: "Features", href: "/#features" },
-    { name: "About", href: "/#about" },
   ];
 
   // Services dropdown for logged-in users

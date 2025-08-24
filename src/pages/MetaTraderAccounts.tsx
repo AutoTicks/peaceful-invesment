@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useMetaTraderAccounts } from "@/hooks/useMetaTraderAccounts";
+import { usePocketBaseMetaTraderAccounts } from "@/hooks/usePocketBaseMetaTraderAccounts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, TrendingUp, DollarSign, AlertCircle, RefreshCw } from "lucide-react";
+import { Loader2, TrendingUp, DollarSign, AlertCircle, RefreshCw, ExternalLink, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 export default function MetaTraderAccounts() {
   const { user } = useAuth();
-  const { accounts, loading, error, refetch } = useMetaTraderAccounts();
+  const { accounts, loading, error, refetch } = usePocketBaseMetaTraderAccounts();
   const { toast } = useToast();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -88,6 +89,127 @@ export default function MetaTraderAccounts() {
   }
 
   if (error) {
+    // Special handling for no account linked error
+    if (error === 'no_accounts_found') {
+      return (
+        <div className="min-h-screen bg-gradient-hero">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">MetaTrader Accounts</h1>
+                <p className="text-muted-foreground">
+                  Monitor and manage your trading accounts in real-time
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center py-12">
+              <Card className="glass-card max-w-2xl mx-auto">
+                <CardContent className="pt-8 pb-8">
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                      <TrendingUp className="h-8 w-8 text-blue-600" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h3 className="text-2xl font-semibold text-foreground">No Trading Accounts Yet</h3>
+                      <p className="text-muted-foreground max-w-md">
+                        Your profile is set up, but you don't have any trading accounts yet. You can create a new account or wait for account verification.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg">
+                      <Link to="/overseas-company">
+                        <Button className="w-full glass-card" variant="outline">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Create New Account
+                        </Button>
+                      </Link>
+                      
+                      <Button 
+                        onClick={handleRefresh} 
+                        variant="outline" 
+                        className="w-full glass-card"
+                      >
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Check Again
+                      </Button>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+                      <p className="text-sm text-green-700 dark:text-green-300">
+                        <strong>Good news!</strong> Your profile is verified and ready. You can now create a new trading account through the overseas company setup.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (error === 'no_account_linked') {
+      return (
+        <div className="min-h-screen bg-gradient-hero">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">MetaTrader Accounts</h1>
+                <p className="text-muted-foreground">
+                  Monitor and manage your trading accounts in real-time
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center py-12">
+              <Card className="glass-card max-w-2xl mx-auto">
+                <CardContent className="pt-8 pb-8">
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
+                      <Clock className="h-8 w-8 text-amber-600" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h3 className="text-2xl font-semibold text-foreground">No Trading Account Linked</h3>
+                      <p className="text-muted-foreground max-w-md">
+                        Your trading account hasn't been linked to your profile yet. This usually happens during the account setup process.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg">
+                      <Link to="/overseas-company">
+                        <Button className="w-full glass-card" variant="outline">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Open Overseas Company
+                        </Button>
+                      </Link>
+                      
+                      <Button 
+                        onClick={handleRefresh} 
+                        variant="outline" 
+                        className="w-full glass-card"
+                      >
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Check Again
+                      </Button>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        <strong>What's happening?</strong> Your account is being verified and linked to our trading system. 
+                        This process typically takes 24-48 hours after completing the overseas company setup.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Default error handling for other errors
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Card className="w-full max-w-md">
@@ -150,16 +272,16 @@ export default function MetaTraderAccounts() {
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle className="text-lg font-semibold">
-                        #{account.login}
+                        {account.name}
                       </CardTitle>
-                      <p className="text-sm text-muted-foreground">{account.server}</p>
+                      <p className="text-sm text-muted-foreground">ID: {account.meta_trader_id}</p>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Badge className={getStatusColor(account.status)}>
+                      <Badge className={getStatusColor(account.status.toLowerCase())}>
                         {account.status}
                       </Badge>
-                      <Badge className={getAccountTypeColor(account.account_type)}>
-                        {account.account_type}
+                      <Badge className="bg-secondary/10 text-secondary-foreground hover:bg-secondary/20">
+                        Live
                       </Badge>
                     </div>
                   </div>
@@ -173,7 +295,7 @@ export default function MetaTraderAccounts() {
                         Balance
                       </p>
                       <p className="text-lg font-semibold text-emerald-600">
-                        {formatCurrency(account.balance, account.currency)}
+                        {formatCurrency(account.balance, 'USD')}
                       </p>
                     </div>
                     <div className="space-y-1">
@@ -181,7 +303,7 @@ export default function MetaTraderAccounts() {
                         Equity
                       </p>
                       <p className="text-lg font-semibold">
-                        {formatCurrency(account.equity, account.currency)}
+                        {formatCurrency(account.equity, 'USD')}
                       </p>
                     </div>
                   </div>
@@ -193,15 +315,15 @@ export default function MetaTraderAccounts() {
                         Margin Used
                       </p>
                       <p className="text-sm font-medium text-amber-600">
-                        {formatCurrency(account.margin, account.currency)}
+                        {formatCurrency(account.margin, 'USD')}
                       </p>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                        Free Margin
+                        P&L
                       </p>
-                      <p className="text-sm font-medium text-emerald-600">
-                        {formatCurrency(account.free_margin, account.currency)}
+                      <p className={`text-sm font-medium ${account.total_pnl >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                        {formatCurrency(account.total_pnl, 'USD')}
                       </p>
                     </div>
                   </div>
@@ -209,9 +331,9 @@ export default function MetaTraderAccounts() {
                   {/* Additional Info */}
                   <div className="pt-3 border-t border-border/20">
                     <div className="flex justify-between items-center text-xs text-muted-foreground">
-                      <span>Leverage: 1:{account.leverage}</span>
+                      <span>Expires: {new Date(account.expire_date).toLocaleDateString()}</span>
                       <span>
-                        Updated: {new Date(account.last_updated).toLocaleDateString()}
+                        Updated: {new Date(account.updated).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
