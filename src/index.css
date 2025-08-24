@@ -64,6 +64,14 @@
     --destructive-foreground: 210 20% 98%;
   }
 
+  /* Glass Card Effect */
+  .glass-card {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--shadow-glass);
+  }
+
   .dark {
     /* Base Colors - Dark Theme */
     --background: 222 84% 5%;  /* Deep Navy #0F172A */

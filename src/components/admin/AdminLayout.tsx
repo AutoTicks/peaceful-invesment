@@ -10,6 +10,7 @@ import {
   FileText, 
   Settings, 
   BarChart3,
+  Activity,
   Menu,
   X,
   LogOut,
@@ -27,8 +28,9 @@ const navigation = [
   { name: "Users", href: "/admin/users", icon: Users },
   { name: "Trading Accounts", href: "/admin/accounts", icon: CreditCard },
   { name: "Contact Requests", href: "/admin/contact-requests", icon: MessageSquare },
-  { name: "Blog Management", href: "/admin/blog", icon: FileText },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Audit Log", href: "/admin/audit-log", icon: Activity },
+  { name: "Blog Management", href: "/admin/blog", icon: FileText },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
@@ -52,9 +54,31 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         />
       )}
 
+      {/* Top bar */}
+      <div className="sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+        <div className="flex items-center justify-between px-6 py-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+          
+          <div className="flex items-center space-x-4">
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-semibold">
+                {navigation.find(item => item.href === location.pathname)?.name || 'Admin'}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-0
+        fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out lg:fixed lg:translate-x-0 lg:inset-auto lg:flex-shrink-0 lg:top-16 lg:h-[calc(100vh-4rem)]
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <div className="flex flex-col h-full">
@@ -124,29 +148,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
-        {/* Top bar */}
-        <div className="sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
-          <div className="flex items-center justify-between px-6 py-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-            
-            <div className="flex items-center space-x-4">
-              <div className="hidden sm:block">
-                <h1 className="text-lg font-semibold">
-                  {navigation.find(item => item.href === location.pathname)?.name || 'Admin'}
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div className="lg:ml-64 lg:pt-16">
         {/* Page content */}
         <main className="p-6">
           {children}

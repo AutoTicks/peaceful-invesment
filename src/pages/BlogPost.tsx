@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock, Eye, Tag, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,26 +14,26 @@ const BlogPost = () => {
   const [post, setPost] = useState<BlogPostType | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      if (!slug) return;
-      
-      setLoading(true);
-      const postData = await getPostBySlug(slug);
-      
-      if (postData) {
-        setPost(postData);
-        // Increment view count
-        await incrementViewCount(postData.id);
-      } else {
-        navigate('/blog');
-      }
-      
-      setLoading(false);
-    };
+  const fetchPost = useCallback(async () => {
+    if (!slug) return;
+    
+    setLoading(true);
+    const postData = await getPostBySlug(slug);
+    
+    if (postData) {
+      setPost(postData);
+      // Increment view count
+      await incrementViewCount(postData.id);
+    } else {
+      navigate('/blog');
+    }
+    
+    setLoading(false);
+  }, [slug, navigate]);
 
+  useEffect(() => {
     fetchPost();
-  }, [slug, getPostBySlug, incrementViewCount, navigate]);
+  }, [fetchPost]);
 
   const sharePost = async () => {
     if (navigator.share && post) {

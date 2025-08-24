@@ -29,6 +29,16 @@ import TradingDashboard from "./pages/TradingDashboard";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+// Admin imports
+import AdminRouteGuard from "./components/admin/AdminRouteGuard";
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminAccounts from "./pages/admin/AdminAccounts";
+import AdminContactRequests from "./pages/admin/AdminContactRequests";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminAuditLog from "./pages/admin/AdminAuditLog";
+import CreateAdminUser from "./pages/CreateAdminUser";
 
 const queryClient = new QueryClient();
 
@@ -53,7 +63,6 @@ function App() {
                   <Route path="/downloads" element={<Downloads />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
-                  <Route path="/admin/blog" element={<AdminBlog />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/create-account" element={<CreateAccount />} />
                   <Route path="/dashboard" element={<Dashboard />} />
@@ -69,7 +78,67 @@ function App() {
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/trading" element={<TradingDashboard />} />
                   <Route path="/contact" element={<Contact />} />
-                  <Route path="/about" element={<About />} />
+                                     <Route path="/about" element={<About />} />
+                   <Route path="/create-admin" element={<CreateAdminUser />} />
+                   
+                   {/* Admin Routes */}
+                  <Route path="/admin" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminDashboard />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/dashboard" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminDashboard />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/users" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminUsers />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/accounts" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminAccounts />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/contact-requests" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminContactRequests />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/analytics" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminAnalytics />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/audit-log" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminAuditLog />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/blog" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminBlog />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

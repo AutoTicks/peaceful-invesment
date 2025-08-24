@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface BlogPost {
@@ -35,7 +35,7 @@ export const useBlog = () => {
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchPosts = async (status: string = 'published') => {
+  const fetchPosts = useCallback(async (status: string = 'published') => {
     try {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -48,9 +48,9 @@ export const useBlog = () => {
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     }
-  };
+  }, []);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('blog_categories')
@@ -62,9 +62,9 @@ export const useBlog = () => {
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
-  };
+  }, []);
 
-  const getPostBySlug = async (slug: string): Promise<BlogPost | null> => {
+  const getPostBySlug = useCallback(async (slug: string): Promise<BlogPost | null> => {
     try {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -79,7 +79,7 @@ export const useBlog = () => {
       console.error('Error fetching blog post:', error);
       return null;
     }
-  };
+  }, []);
 
   const createPost = async (post: Partial<BlogPost>) => {
     try {
@@ -95,7 +95,7 @@ export const useBlog = () => {
           status: post.status || 'draft',
           meta_title: post.meta_title,
           meta_description: post.meta_description,
-          author_id: (await supabase.auth.getUser()).data.user?.id!,
+          author_id: (await supabase.auth.getUser()).data.user?.id || '',
           published_at: post.status === 'published' ? new Date().toISOString() : null,
         }])
         .select()
@@ -141,7 +141,7 @@ export const useBlog = () => {
     }
   };
 
-  const incrementViewCount = async (id: string) => {
+  const incrementViewCount = useCallback(async (id: string) => {
     try {
       const { error } = await supabase.rpc('increment_blog_view_count', {
         post_id: id
@@ -151,7 +151,7 @@ export const useBlog = () => {
     } catch (error) {
       console.error('Error incrementing view count:', error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const loadInitialData = async () => {
