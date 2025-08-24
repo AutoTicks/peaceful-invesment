@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -54,21 +54,23 @@ const Profile = () => {
   });
 
   // Update form values when profile loads
-  if (profile && !form.formState.isDirty) {
-    form.reset({
-      full_name: profile.full_name || "",
-      phone: profile.phone || "",
-      address: profile.address || "",
-      city: profile.city || "",
-      state: profile.state || "",
-      zip_code: profile.zip_code || "",
-      employment_status: profile.employment_status || "",
-      employer: profile.employer || "",
-      annual_income: profile.annual_income || undefined,
-      investment_experience: profile.investment_experience || "",
-      risk_tolerance: profile.risk_tolerance || "",
-    });
-  }
+  useEffect(() => {
+    if (profile) {
+      form.reset({
+        full_name: profile.full_name || "",
+        phone: profile.phone || "",
+        address: profile.address || "",
+        city: profile.city || "",
+        state: profile.state || "",
+        zip_code: profile.zip_code || "",
+        employment_status: profile.employment_status || "",
+        employer: profile.employer || "",
+        annual_income: profile.annual_income || undefined,
+        investment_experience: profile.investment_experience || "",
+        risk_tolerance: profile.risk_tolerance || "",
+      });
+    }
+  }, [profile, form]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     setIsUpdating(true);
