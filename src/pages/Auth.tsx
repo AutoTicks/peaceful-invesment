@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
-import { Shield, Eye, EyeOff } from "lucide-react";
+import { Shield, Eye, EyeOff, User, Lock } from "lucide-react";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -218,10 +218,24 @@ const Auth = () => {
             </Button>
 
             {!isSignUp && (
-              <div className="text-center">
-                <a href="#" className="text-sm text-primary hover:underline">
-                  Forgot Password?
-                </a>
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-4 text-sm">
+                  <Link 
+                    to="/forgot-password" 
+                    className="text-primary hover:underline flex items-center gap-1"
+                  >
+                    <Lock className="h-3 w-3" />
+                    Forgot Password?
+                  </Link>
+                  <span className="text-muted-foreground">|</span>
+                  <Link 
+                    to="/forgot-username" 
+                    className="text-primary hover:underline flex items-center gap-1"
+                  >
+                    <User className="h-3 w-3" />
+                    Forgot Username?
+                  </Link>
+                </div>
               </div>
             )}
 

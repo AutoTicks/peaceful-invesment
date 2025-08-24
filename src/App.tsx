@@ -17,6 +17,10 @@ import OverseasCompany from "./pages/OverseasCompany";
 import Referrals from "./pages/Referrals";
 import Profile from "./pages/Profile";
 import Requests from "./pages/Requests";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import ForgotUsername from "./pages/ForgotUsername";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +47,10 @@ function App() {
                   <Route path="/referrals" element={<Referrals />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/requests" element={<Requests />} />
+                  <Route path="/change-password" element={<ChangePassword />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/forgot-username" element={<ForgotUsername />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

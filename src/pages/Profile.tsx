@@ -12,7 +12,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Upload, User } from "lucide-react";
+import { Loader2, Upload, User, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const profileSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
@@ -154,9 +155,17 @@ const Profile = () => {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Personal Information</CardTitle>
               {!isEditing && (
-                <Button variant="outline" onClick={() => setIsEditing(true)}>
-                  Edit Profile
-                </Button>
+                <div className="flex gap-2">
+                  <Link to="/change-password">
+                    <Button variant="outline" size="sm">
+                      <Lock className="h-4 w-4 mr-2" />
+                      Change Password
+                    </Button>
+                  </Link>
+                  <Button variant="outline" onClick={() => setIsEditing(true)}>
+                    Edit Profile
+                  </Button>
+                </div>
               )}
             </CardHeader>
             <CardContent>
