@@ -49,12 +49,12 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <div className="flex justify-between items-center h-16 min-w-0">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">
+          <Link to="/" className="flex items-center space-x-2 min-w-0 flex-shrink-0">
+            <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
+            <span className="text-lg sm:text-xl font-bold text-foreground truncate">
               Peaceful Investment
             </span>
           </Link>
@@ -154,106 +154,111 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex-shrink-0 ml-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground p-1"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-xl border-t border-border/40">
-              {/* Main nav links */}
-              {mainNavLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className="block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              
-              {/* Services for mobile */}
-              {user && (
-                <>
-                  <div className="px-3 py-2 text-xs text-muted-foreground font-semibold uppercase tracking-wider">
-                    Services
-                  </div>
-                  {servicesLinks.map((link) => (
-                    <Link
-                      key={link.name}
-                      to={link.href}
-                      className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                  
-                  <div className="px-3 py-2 text-xs text-muted-foreground font-semibold uppercase tracking-wider">
-                    Account
-                  </div>
+          <div className="md:hidden fixed inset-x-0 top-16 bg-background/95 backdrop-blur-xl border-t border-border/40 shadow-lg z-50">
+            <div className="w-full max-w-full overflow-x-hidden">
+              <div className="px-3 py-2 space-y-1">
+                {/* Main nav links */}
+                {mainNavLinks.map((link) => (
                   <Link
-                    to="/profile"
-                    className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                    key={link.name}
+                    to={link.href}
+                    className="block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium text-sm truncate"
                     onClick={() => setIsOpen(false)}
                   >
-                    Profile Settings
+                    {link.name}
                   </Link>
-                  <Link
-                    to="/verification"
-                    className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Verification Center
-                  </Link>
-                  {isAdmin() && (
-                    <Link
-                      to="/admin/blog"
-                      className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Blog Admin
-                    </Link>
-                  )}
-                </>
-              )}
+                ))}
               
-              <div className="px-3 py-4 space-y-3 border-t border-border/40 mt-4">
-                <ThemeToggle />
-                {user ? (
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground px-3">
-                      {user.email}
-                    </p>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => {
-                        handleSignOut();
-                        setIsOpen(false);
-                      }} 
-                      className="w-full"
-                    >
-                      Sign Out
-                    </Button>
-                  </div>
-                ) : (
+                {/* Services for mobile */}
+                {user && (
                   <>
-                    <Link to="/auth" onClick={() => setIsOpen(false)}>
-                      <Button variant="ghost" className="w-full font-medium">Login</Button>
+                    <div className="px-3 py-2 text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+                      Services
+                    </div>
+                    {servicesLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        to={link.href}
+                        className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm truncate"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                    
+                    <div className="px-3 py-2 text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+                      Account
+                    </div>
+                    <Link
+                      to="/profile"
+                      className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm truncate"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Profile Settings
                     </Link>
-                    <Link to="/auth?mode=signup" onClick={() => setIsOpen(false)}>
-                      <Button className="download-btn-primary w-full font-medium">Sign Up</Button>
+                    <Link
+                      to="/verification"
+                      className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm truncate"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Verification Center
                     </Link>
+                    {isAdmin() && (
+                      <Link
+                        to="/admin/blog"
+                        className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm truncate"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Blog Admin
+                      </Link>
+                    )}
                   </>
                 )}
+                
+                <div className="px-3 py-3 space-y-2 border-t border-border/40 mt-2">
+                  <div className="flex justify-center">
+                    <ThemeToggle />
+                  </div>
+                  {user ? (
+                    <div className="space-y-2">
+                      <p className="text-xs text-muted-foreground px-3 truncate">
+                        {user.email}
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          handleSignOut();
+                          setIsOpen(false);
+                        }} 
+                        className="w-full text-sm"
+                      >
+                        Sign Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Link to="/auth" onClick={() => setIsOpen(false)}>
+                        <Button variant="ghost" size="sm" className="w-full text-sm">Login</Button>
+                      </Link>
+                      <Link to="/auth?mode=signup" onClick={() => setIsOpen(false)}>
+                        <Button size="sm" className="download-btn-primary w-full text-sm">Sign Up</Button>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

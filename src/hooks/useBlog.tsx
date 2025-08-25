@@ -37,11 +37,17 @@ export const useBlog = () => {
 
   const fetchPosts = useCallback(async (status: string = 'published') => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('blog_posts')
         .select('*')
-        .eq('status', status)
         .order('published_at', { ascending: false });
+
+      // If status is not 'all', filter by status
+      if (status !== 'all') {
+        query = query.eq('status', status);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       setPosts((data || []) as BlogPost[]);

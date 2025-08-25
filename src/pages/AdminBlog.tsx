@@ -57,6 +57,7 @@ const AdminBlog = () => {
   }, [isAdmin, roleLoading, navigate, toast]);
 
   useEffect(() => {
+    console.log('AdminBlog: Fetching posts with status "all"');
     fetchPosts('all');
   }, [fetchPosts]);
 

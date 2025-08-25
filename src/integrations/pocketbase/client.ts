@@ -61,6 +61,27 @@ export const getAccountsByUserId = async (userId: string) => {
   }
 };
 
+// Get latest updates by platform
+export const getLatestUpdates = async (platform: string) => {
+  try {
+    const records = await pocketbase.collection('updates').getList(1, 1, {
+      filter: `platform = "${platform}" && type = "release"`,
+      sort: '-created',
+      requestKey: `updates_${platform}_${Date.now()}`
+    });
+    return records.items[0] || null;
+  } catch (error) {
+    console.error(`Failed to get latest ${platform} updates:`, error);
+    throw error;
+  }
+};
+
+// Get download URL for an update
+export const getDownloadUrl = (record: PocketBaseUpdate | null) => {
+  if (!record?.attachment) return undefined;
+  return `${pocketbase.baseUrl}api/files/updates/${record.id}/${record.attachment}`;
+};
+
 // Types for PocketBase data
 export interface PocketBaseUser {
   id: string;
@@ -90,4 +111,17 @@ export interface PocketBaseAccount {
   };
   collaborators: string[];
   config: Record<string, unknown> | null;
+}
+
+export interface PocketBaseUpdate {
+  id: string;
+  version: string;
+  platform: string;
+  type: 'release' | 'patch';
+  attachment: string;
+  description: string;
+  force_update: boolean;
+  serve_to: string[];
+  created: string;
+  updated: string;
 }
