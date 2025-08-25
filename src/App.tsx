@@ -35,6 +35,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminAccounts from "./pages/admin/AdminAccounts";
+import AdminOverseasCompanies from "./pages/admin/AdminOverseasCompanies";
 import AdminContactRequests from "./pages/admin/AdminContactRequests";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminAuditLog from "./pages/admin/AdminAuditLog";
@@ -107,6 +108,13 @@ function App() {
                     <AdminRouteGuard>
                       <AdminLayout>
                         <AdminAccounts />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
+                  <Route path="/admin/overseas-companies" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminOverseasCompanies />
                       </AdminLayout>
                     </AdminRouteGuard>
                   } />

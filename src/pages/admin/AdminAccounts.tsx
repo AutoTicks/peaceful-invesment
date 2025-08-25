@@ -3,12 +3,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -34,7 +38,9 @@ import {
   Activity,
   Loader2,
   User,
-  BarChart3
+  BarChart3,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -43,6 +49,7 @@ import {
   pocketbase,
   type PocketBaseAccount 
 } from "@/integrations/pocketbase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 interface AccountWithUser extends Omit<PocketBaseAccount, 'user'> {
@@ -51,6 +58,13 @@ interface AccountWithUser extends Omit<PocketBaseAccount, 'user'> {
     email: string;
     name?: string;
   };
+}
+
+interface SupabaseUser {
+  user_id: string;
+  email?: string;
+  full_name?: string;
+  status: string;
 }
 
 export default function AdminAccounts() {
@@ -64,14 +78,55 @@ export default function AdminAccounts() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedAccount, setSelectedAccount] = useState<AccountWithUser | null>(null);
   const [accountDetailsOpen, setAccountDetailsOpen] = useState(false);
+  
+  // Add Account Dialog State
+  const [addAccountOpen, setAddAccountOpen] = useState(false);
+  const [supabaseUsers, setSupabaseUsers] = useState<SupabaseUser[]>([]);
+  const [selectedUserEmail, setSelectedUserEmail] = useState("");
+  const [newAccount, setNewAccount] = useState({
+    name: "",
+    meta_trader_id: "",
+    balance: 0,
+    status: "ACTIVE"
+  });
+  const [creatingAccount, setCreatingAccount] = useState(false);
 
   useEffect(() => {
     fetchAccounts();
+    fetchSupabaseUsers();
   }, []);
 
   useEffect(() => {
     filterAccounts();
   }, [accounts, searchTerm, statusFilter]);
+
+  const fetchSupabaseUsers = async () => {
+    try {
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('user_id, full_name')
+        .eq('status', 'verified')
+        .order('full_name');
+
+      if (error) throw error;
+
+      const users: SupabaseUser[] = profiles?.map(profile => ({
+        user_id: profile.user_id,
+        email: profile.user_id, // Using user_id as email since we can't access auth.users
+        full_name: profile.full_name || 'Unknown',
+        status: 'verified'
+      })) || [];
+
+      setSupabaseUsers(users);
+    } catch (error) {
+      console.error('Error fetching Supabase users:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch users",
+        variant: "destructive",
+      });
+    }
+  };
 
   const fetchAccounts = async () => {
     try {
@@ -199,6 +254,91 @@ export default function AdminAccounts() {
     return accounts.filter(account => account.status === 'ACTIVE').length;
   };
 
+  const handleCreateAccount = async () => {
+    if (!selectedUserEmail || !newAccount.name || !newAccount.meta_trader_id) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setCreatingAccount(true);
+
+      // Find user ID from email
+      const selectedUser = supabaseUsers.find(user => user.email === selectedUserEmail);
+      if (!selectedUser) {
+        throw new Error('Selected user not found');
+      }
+
+      // Authenticate as admin
+      await authenticateAsAdmin();
+
+      // First, check if user exists in PocketBase, if not create them
+      let pocketbaseUser;
+      try {
+        const existingUser = await pocketbase.collection('users').getFirstListItem(`email = "${selectedUserEmail}"`);
+        pocketbaseUser = existingUser;
+      } catch (error) {
+        // User doesn't exist in PocketBase, create them
+        const userData = {
+          email: selectedUserEmail,
+          name: selectedUser.full_name || selectedUserEmail,
+          active: true,
+          verified: true
+        };
+        pocketbaseUser = await pocketbase.collection('users').create(userData);
+      }
+
+      // Create account in PocketBase
+      const accountData = {
+        name: newAccount.name,
+        meta_trader_id: newAccount.meta_trader_id,
+        balance: newAccount.balance,
+        equity: newAccount.balance, // Initially same as balance
+        margin: 0,
+        total_pnl: 0,
+        status: newAccount.status,
+        user: pocketbaseUser.id,
+        symbols: [],
+        collaborators: [],
+        config: {}
+      };
+
+      const createdAccount = await pocketbase.collection('accounts').create(accountData);
+
+      toast({
+        title: "Success",
+        description: "Account created successfully",
+      });
+
+      // Reset form and close dialog
+      setNewAccount({
+        name: "",
+        meta_trader_id: "",
+        balance: 0,
+        status: "ACTIVE"
+      });
+      setSelectedUserEmail("");
+      setAddAccountOpen(false);
+
+      // Refresh accounts list
+      await fetchAccounts();
+
+    } catch (error) {
+      console.error('Error creating account:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create account",
+        variant: "destructive",
+      });
+    } finally {
+      setCreatingAccount(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -226,10 +366,109 @@ export default function AdminAccounts() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
-          <Button size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Account
-          </Button>
+          <Dialog open={addAccountOpen} onOpenChange={setAddAccountOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Account
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Create New Trading Account</DialogTitle>
+                <DialogDescription>
+                  Create a new MetaTrader trading account for a user
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="user">Select User *</Label>
+                  <Select value={selectedUserEmail} onValueChange={setSelectedUserEmail}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {supabaseUsers.map((user) => (
+                        <SelectItem key={user.user_id} value={user.email}>
+                          {user.email} {user.full_name && `(${user.full_name})`}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="name">Account Name *</Label>
+                  <Input
+                    id="name"
+                    placeholder="Enter account name"
+                    value={newAccount.name}
+                    onChange={(e) => setNewAccount(prev => ({ ...prev, name: e.target.value }))}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="meta_trader_id">MetaTrader ID *</Label>
+                  <Input
+                    id="meta_trader_id"
+                    placeholder="Enter MetaTrader account ID"
+                    value={newAccount.meta_trader_id}
+                    onChange={(e) => setNewAccount(prev => ({ ...prev, meta_trader_id: e.target.value }))}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="balance">Initial Balance</Label>
+                  <Input
+                    id="balance"
+                    type="number"
+                    placeholder="Enter initial balance"
+                    value={newAccount.balance}
+                    onChange={(e) => setNewAccount(prev => ({ ...prev, balance: parseFloat(e.target.value) || 0 }))}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="status">Account Status</Label>
+                  <Select 
+                    value={newAccount.status} 
+                    onValueChange={(value) => setNewAccount(prev => ({ ...prev, status: value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ACTIVE">Active</SelectItem>
+                      <SelectItem value="INACTIVE">Inactive</SelectItem>
+                      <SelectItem value="SUSPENDED">Suspended</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setAddAccountOpen(false)}
+                  disabled={creatingAccount}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleCreateAccount}
+                  disabled={creatingAccount || !selectedUserEmail || !newAccount.name || !newAccount.meta_trader_id}
+                >
+                  {creatingAccount ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                  )}
+                  Create Account
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 

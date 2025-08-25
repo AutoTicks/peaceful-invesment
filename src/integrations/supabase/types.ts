@@ -22,7 +22,7 @@ export type Database = {
           id: string
           note: string | null
           user_id: string
-          verification_request_id: string
+          verification_request_id: string | null
         }
         Insert: {
           action: string
@@ -31,7 +31,7 @@ export type Database = {
           id?: string
           note?: string | null
           user_id: string
-          verification_request_id: string
+          verification_request_id?: string | null
         }
         Update: {
           action?: string
@@ -143,6 +143,141 @@ export type Database = {
           title?: string
           updated_at?: string
           view_count?: number | null
+        }
+        Relationships: []
+      }
+      blog_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author_id: string
+          category: string | null
+          content: string
+          created_at: string
+          excerpt: string | null
+          featured_image: string | null
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          slug: string
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          view_count: number | null
+        }
+        Insert: {
+          author_id: string
+          category?: string | null
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug: string
+          status?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          view_count?: number | null
+        }
+        Update: {
+          author_id?: string
+          category?: string | null
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug?: string
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      contact_requests: {
+        Row: {
+          admin_notes: string | null
+          contact_method: string
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          message: string
+          phone: string | null
+          priority: string
+          resolved_at: string | null
+          status: string
+          subject: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          contact_method: string
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          message: string
+          phone?: string | null
+          priority: string
+          resolved_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          contact_method?: string
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string
+          phone?: string | null
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
