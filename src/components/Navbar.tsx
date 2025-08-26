@@ -123,7 +123,7 @@ const Navbar = () => {
                     </DropdownMenuItem>
                     {isAdmin() && (
                       <DropdownMenuItem asChild>
-                        <Link to="/admin/blog" className="flex items-center gap-2 w-full cursor-pointer">
+                        <Link to="/admin/dashboard" className="flex items-center gap-2 w-full cursor-pointer">
                           <Edit className="h-4 w-4" />
                           Admin Dashboard
                         </Link>
@@ -217,7 +217,7 @@ const Navbar = () => {
                     </Link>
                     {isAdmin() && (
                       <Link
-                        to="/admin/blog"
+                        to="/admin/dashboard"
                         className="block px-6 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm truncate"
                         onClick={() => setIsOpen(false)}
                       >
