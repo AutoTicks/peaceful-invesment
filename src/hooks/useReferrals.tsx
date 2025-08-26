@@ -65,7 +65,8 @@ export const useReferrals = () => {
         throw referralError;
       }
 
-      setReferral(referralData as Referral);
+      // Set referral data (null if no referral exists)
+      setReferral(referralData);
 
       if (referralData) {
         // Get payments for this referral
@@ -87,6 +88,9 @@ export const useReferrals = () => {
 
         if (signupsError) throw signupsError;
         setSignups(signupsData || []);
+      } else {
+        setPayments([]);
+        setSignups([]);
       }
     } catch (err: any) {
       setError(err.message);
@@ -118,11 +122,16 @@ export const useReferrals = () => {
 
       if (error) throw error;
 
-      setReferral(data.referral);
-      toast({
-        title: "Success",
-        description: "Referral link generated successfully!",
-      });
+      if (data.referral) {
+        setReferral(data.referral);
+        toast({
+          title: "Success",
+          description: data.message || "Referral link generated successfully!",
+        });
+        
+        // Refresh the data to get payments and signups
+        await fetchReferralData();
+      }
 
       return data;
     } catch (err: any) {

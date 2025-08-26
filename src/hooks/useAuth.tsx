@@ -8,7 +8,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, fullName: string) => Promise<{ error: any; user?: User }>;
   signOut: () => Promise<{ error: any }>;
 }
 
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    return { error, data };
+    return { error, user: data.user };
   };
 
   const signOut = async () => {
@@ -123,10 +123,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }
+
+export { useAuth };

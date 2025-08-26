@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Shield, Eye, EyeOff, User, Lock } from "lucide-react";
 
 const Auth = () => {
@@ -18,9 +19,72 @@ const Auth = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [referralCode, setReferralCode] = useState<string | null>(null);
 
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
+
+  const handleResendConfirmation = async () => {
+    if (!email) {
+      setErrors({ general: 'Please enter your email address first.' });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+      });
+
+      if (error) {
+        setErrors({ general: error.message });
+      } else {
+        setErrors({});
+        // Show success message
+        alert('Confirmation email sent! Please check your inbox.');
+      }
+    } catch (error) {
+      setErrors({ general: 'Failed to send confirmation email. Please try again.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Capture referral code from URL and handle auth errors
+  useEffect(() => {
+    const refCode = searchParams.get('ref');
+    if (refCode) {
+      setReferralCode(refCode);
+      console.log('Referral code detected in Auth:', refCode);
+    }
+
+    // Handle Supabase auth errors from URL hash
+    const handleAuthError = () => {
+      const hash = window.location.hash;
+      if (hash.includes('error=')) {
+        const urlParams = new URLSearchParams(hash.substring(1));
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+        
+        if (error === 'access_denied' && errorDescription?.includes('expired')) {
+          setErrors({
+            general: 'Email confirmation link has expired. Please enter your email below and click "Resend Confirmation" to get a new link.'
+          });
+          // Clear the hash to prevent showing the error again
+          window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+        } else if (error) {
+          setErrors({
+            general: `Authentication error: ${errorDescription || error}`
+          });
+          // Clear the hash to prevent showing the error again
+          window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+        }
+      }
+    };
+
+    handleAuthError();
+  }, [searchParams]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -68,8 +132,15 @@ const Auth = () => {
 
     try {
       if (isSignUp) {
-        const { error } = await signUp(email, password, fullName);
+        const { error, user: newUser } = await signUp(email, password, fullName);
+        
         if (!error) {
+          // Store referral code in localStorage for later processing
+          if (referralCode) {
+            localStorage.setItem('pendingReferralCode', referralCode);
+            console.log('Referral code stored for later processing:', referralCode);
+          }
+          
           // Don't navigate on signup as user needs to confirm email
           setEmail("");
           setPassword("");
@@ -86,6 +157,8 @@ const Auth = () => {
       setIsLoading(false);
     }
   };
+
+
 
   const switchMode = () => {
     setIsSignUp(!isSignUp);
@@ -112,9 +185,21 @@ const Auth = () => {
               : "Login to manage your bots and investments."
             }
           </CardDescription>
+          {referralCode && isSignUp && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
+              <p className="text-sm text-green-800">
+                <strong>Referral Code Applied:</strong> {referralCode}
+              </p>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {errors.general && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-sm text-red-800">{errors.general}</p>
+              </div>
+            )}
             {isSignUp && (
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name</Label>
@@ -216,6 +301,19 @@ const Auth = () => {
             >
               {isLoading ? "Loading..." : isSignUp ? "Sign Up" : "Login"}
             </Button>
+
+            {/* Resend Confirmation Button for expired links */}
+            {errors.general && errors.general.includes('expired') && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleResendConfirmation}
+                disabled={isLoading || !email}
+                className="w-full"
+              >
+                {isLoading ? "Sending..." : "Resend Confirmation Email"}
+              </Button>
+            )}
 
             {!isSignUp && (
               <div className="space-y-3">

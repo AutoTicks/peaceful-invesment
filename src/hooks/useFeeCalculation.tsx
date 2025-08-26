@@ -27,7 +27,7 @@ interface FeeStructure {
   is_active: boolean;
 }
 
-export function useFeeCalculation() {
+function useFeeCalculation() {
   const [feeStructures, setFeeStructures] = useState<FeeStructure[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -128,3 +128,5 @@ export function useFeeCalculation() {
     refetchFeeStructures: fetchFeeStructures,
   };
 }
+
+export { useFeeCalculation };

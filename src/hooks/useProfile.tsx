@@ -25,7 +25,7 @@ export interface UserProfile {
   updated_at: string;
 }
 
-export function useProfile() {
+function useProfile() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,3 +84,5 @@ export function useProfile() {
     refetchProfile: fetchProfile,
   };
 }
+
+export { useProfile };

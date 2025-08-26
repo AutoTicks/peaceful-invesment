@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { useReferralProcessor } from "@/hooks/useReferralProcessor";
 import Navbar from "@/components/Navbar";
 import RouteGuard from "@/components/RouteGuard";
 import Index from "./pages/Index";
@@ -36,6 +37,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminAccounts from "./pages/admin/AdminAccounts";
 import AdminOverseasCompanies from "./pages/admin/AdminOverseasCompanies";
+import AdminReferrals from "./pages/admin/AdminReferrals";
 import AdminContactRequests from "./pages/admin/AdminContactRequests";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminAuditLog from "./pages/admin/AdminAuditLog";
@@ -43,23 +45,14 @@ import CreateAdminUser from "./pages/CreateAdminUser";
 
 const queryClient = new QueryClient();
 
-function App() {
+function AppContent() {
+  useReferralProcessor(); // Process any pending referrals
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true
-            }}
-          >
-            <RouteGuard>
-              <div className="min-h-screen w-full">
-                <Navbar />
-                <Routes>
+    <RouteGuard>
+      <div className="min-h-screen w-full">
+        <Navbar />
+        <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/downloads" element={<Downloads />} />
                   <Route path="/blog" element={<Blog />} />
@@ -118,6 +111,13 @@ function App() {
                       </AdminLayout>
                     </AdminRouteGuard>
                   } />
+                  <Route path="/admin/referrals" element={
+                    <AdminRouteGuard>
+                      <AdminLayout>
+                        <AdminReferrals />
+                      </AdminLayout>
+                    </AdminRouteGuard>
+                  } />
                   <Route path="/admin/contact-requests" element={
                     <AdminRouteGuard>
                       <AdminLayout>
@@ -152,6 +152,23 @@ function App() {
                 </Routes>
               </div>
             </RouteGuard>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true
+            }}
+          >
+            <AppContent />
           </BrowserRouter>
         </AuthProvider>
       </TooltipProvider>

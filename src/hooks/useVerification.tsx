@@ -31,7 +31,7 @@ export interface AdminAction {
   created_at: string;
 }
 
-export function useVerification() {
+function useVerification() {
   const { user } = useAuth();
   const { refetchProfile } = useProfile();
   const [verificationRequests, setVerificationRequests] = useState<VerificationRequest[]>([]);
@@ -149,3 +149,5 @@ export function useVerification() {
     refetchAdminActions: fetchAdminActions,
   };
 }
+
+export { useVerification };

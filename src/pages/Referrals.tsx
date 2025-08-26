@@ -24,6 +24,8 @@ const Referrals = () => {
   const [inviteMessage, setInviteMessage] = useState("I've been using this trading platform and thought you might be interested. Use my referral link to get started!");
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 
+
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

@@ -154,6 +154,11 @@ export default function AdminUsers() {
   const [verificationAction, setVerificationAction] = useState<'approve' | 'reject' | 'request_more_info' | null>(null);
   const [verificationNote, setVerificationNote] = useState("");
 
+  // Delete user state
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [deleteReason, setDeleteReason] = useState("");
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -479,13 +484,151 @@ export default function AdminUsers() {
     }
   };
 
-  const handleBulkAction = async (action: 'approve' | 'reject' | 'suspend' | 'change_role') => {
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
+    try {
+      setProcessing(true);
+
+      if (userToDelete.user_id === 'bulk') {
+        // Handle bulk deletion
+        const deletedCount = await handleBulkDelete();
+        
+        toast({
+          title: "Success",
+          description: `${deletedCount} users deleted successfully`,
+        });
+      } else {
+        // Handle single user deletion
+        await deleteSingleUser(userToDelete.user_id);
+        
+        toast({
+          title: "Success",
+          description: "User deleted successfully from all accessible tables",
+        });
+      }
+
+      // Refresh users
+      await fetchUsers();
+      
+      // Close dialog
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
+      setDeleteReason("");
+      
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete user';
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const deleteSingleUser = async (userId: string) => {
+    try {
+      // Try to delete user from auth.users table first
+      const { error: authError } = await supabase.auth.admin.deleteUser(userId);
+
+      if (authError) {
+        // If we can't delete from auth.users (no admin privileges), 
+        // we'll continue with deleting from other tables
+        console.warn('Could not delete from auth.users (this is normal for non-admin users):', authError.message);
+      }
+
+      // Delete from profiles table
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (profileError) {
+        console.error('Error deleting profile:', profileError);
+        throw new Error(`Failed to delete profile: ${profileError.message}`);
+      }
+
+      // Delete from user_roles table
+      const { error: roleError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (roleError) {
+        console.error('Error deleting user role:', roleError);
+        // Don't throw here as this is not critical
+      }
+
+      // Delete from referrals table
+      const { error: referralError } = await supabase
+        .from('referrals')
+        .delete()
+        .eq('user_id', userId);
+
+      if (referralError) {
+        console.error('Error deleting referrals:', referralError);
+        // Don't throw here as this is not critical
+      }
+
+      // Delete from referral_signups where user is referred
+      const { error: signupError } = await supabase
+        .from('referral_signups')
+        .delete()
+        .eq('referred_user_id', userId);
+
+      if (signupError) {
+        console.error('Error deleting referral signups:', signupError);
+        // Don't throw here as this is not critical
+      }
+
+      // Log admin action
+      await logAdminAction({
+        type: 'suspend', // Using 'suspend' for deletions
+        userId: userId,
+        note: `User deleted from database. Reason: ${deleteReason || 'No reason provided'}`
+      });
+
+      console.log(`Successfully deleted user ${userId} from all accessible tables`);
+    } catch (error) {
+      console.error('Error in deleteSingleUser:', error);
+      throw error;
+    }
+  };
+
+  const handleBulkDelete = async (): Promise<number> => {
+    let deletedCount = 0;
+
+    for (const userId of selectedUsers) {
+      try {
+        await deleteSingleUser(userId);
+        deletedCount++;
+      } catch (error) {
+        console.error(`Error deleting user ${userId}:`, error);
+      }
+    }
+
+    setSelectedUsers([]);
+    return deletedCount;
+  };
+
+  const handleBulkAction = async (action: 'approve' | 'reject' | 'suspend' | 'change_role' | 'delete') => {
     if (selectedUsers.length === 0) {
       toast({
         title: "Warning",
         description: "Please select users first",
         variant: "destructive",
       });
+      return;
+    }
+
+    if (action === 'delete') {
+      // For bulk delete, we'll show a confirmation dialog
+      setUserToDelete({ user_id: 'bulk', full_name: `${selectedUsers.length} users` } as User);
+      setDeleteReason("Bulk deletion by admin");
+      setDeleteDialogOpen(true);
       return;
     }
 
@@ -760,6 +903,15 @@ export default function AdminUsers() {
                       <Ban className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Suspend</span>
                     </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleBulkAction('delete')}
+                      disabled={processing}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Delete</span>
+                    </Button>
                     {newRole && (
                       <Button
                         variant="secondary"
@@ -887,6 +1039,17 @@ export default function AdminUsers() {
                         <CheckCircle className="h-4 w-4" />
                       )}
                     </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setUserToDelete(user);
+                        setDeleteDialogOpen(true);
+                      }}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               ))
@@ -996,6 +1159,18 @@ export default function AdminUsers() {
                   </Button>
                 </div>
                 <div className="flex items-center space-x-2">
+                  <Button 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={() => {
+                      setUserToDelete(selectedUser);
+                      setUserDetailsOpen(false);
+                      setDeleteDialogOpen(true);
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete User
+                  </Button>
                   <Button 
                     variant="destructive" 
                     size="sm"
@@ -1456,7 +1631,10 @@ export default function AdminUsers() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => window.open(doc.url, '_blank')}
+                            onClick={() => {
+                              const url = doc.url as string;
+                              if (url) window.open(url, '_blank');
+                            }}
                           >
                             <ExternalLink className="h-4 w-4" />
                           </Button>
@@ -1465,20 +1643,20 @@ export default function AdminUsers() {
                         <div className="space-y-2">
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <File className="h-4 w-4" />
-                            <span className="truncate">{doc.filename}</span>
+                            <span className="truncate">{doc.filename as string}</span>
                           </div>
                           
                           {doc.type && (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <FileImage className="h-4 w-4" />
-                              <span>{doc.type}</span>
+                              <span>{doc.type as string}</span>
                             </div>
                           )}
                           
                           {doc.size && (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <FileText className="h-4 w-4" />
-                              <span>{(doc.size / 1024 / 1024).toFixed(2)} MB</span>
+                              <span>{((doc.size as number) / 1024 / 1024).toFixed(2)} MB</span>
                             </div>
                           )}
                         </div>
@@ -1550,6 +1728,87 @@ export default function AdminUsers() {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete User Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-red-600">Delete User</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete the user account and all associated data.
+            </DialogDescription>
+          </DialogHeader>
+          {userToDelete && (
+            <div className="space-y-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <Users className="h-5 w-5 text-red-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-red-900">
+                      {userToDelete.full_name || 'No name provided'}
+                    </p>
+                    <p className="text-sm text-red-700">ID: {userToDelete.user_id}</p>
+                    <p className="text-sm text-red-700">Role: {userToDelete.role || 'user'}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Reason for deletion (Optional)</label>
+                <Textarea
+                  placeholder="Enter reason for deleting this user..."
+                  value={deleteReason}
+                  onChange={(e) => setDeleteReason(e.target.value)}
+                  rows={3}
+                />
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <div className="flex items-start space-x-2">
+                  <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5" />
+                  <div className="text-sm text-yellow-800">
+                    <p className="font-medium">Warning:</p>
+                    <ul className="list-disc list-inside mt-1 space-y-1">
+                      <li>This will delete the user from all accessible database tables</li>
+                      <li>All user data will be permanently removed</li>
+                      <li>Associated referrals and signups will be deleted</li>
+                      <li>Note: Some auth system deletions may require admin privileges</li>
+                      <li>This action cannot be undone</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteDialogOpen(false);
+                setUserToDelete(null);
+                setDeleteReason("");
+              }}
+              disabled={processing}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteUser}
+              disabled={processing}
+            >
+              {processing ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Trash2 className="h-4 w-4 mr-2" />
+              )}
+              Delete User
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

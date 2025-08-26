@@ -18,7 +18,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     if (authLoading || profileLoading) return;
 
     // If not authenticated and trying to access protected routes
-    if (!user && (location.pathname.startsWith('/dashboard') || location.pathname === '/create-account')) {
+    if (!user && location.pathname.startsWith('/dashboard')) {
       navigate('/auth');
       return;
     }
@@ -29,8 +29,8 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
       return;
     }
 
-    // If authenticated and profile not complete, redirect to onboarding
-    if (user && profile && !profile.has_completed_profile && location.pathname !== '/create-account') {
+    // If authenticated and profile not complete, redirect to onboarding (but allow create-account access)
+    if (user && profile && !profile.has_completed_profile && location.pathname !== '/create-account' && !location.pathname.startsWith('/auth')) {
       navigate('/create-account');
       return;
     }

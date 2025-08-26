@@ -19,7 +19,7 @@ export interface Request {
   updated_at: string;
 }
 
-export function useRequests() {
+function useRequests() {
   const { user } = useAuth();
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
@@ -89,3 +89,5 @@ export function useRequests() {
     refetchRequests: fetchRequests,
   };
 }
+
+export { useRequests };

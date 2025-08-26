@@ -9,7 +9,7 @@ import {
   type PocketBaseUser
 } from '@/integrations/pocketbase/client';
 
-export function usePocketBaseMetaTraderAccounts() {
+function usePocketBaseMetaTraderAccounts() {
   const { user } = useAuth();
   const [accounts, setAccounts] = useState<PocketBaseAccount[]>([]);
   const [loading, setLoading] = useState(true);
@@ -105,3 +105,5 @@ export function usePocketBaseMetaTraderAccounts() {
     refetch
   };
 }
+
+export { usePocketBaseMetaTraderAccounts };

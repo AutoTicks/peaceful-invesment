@@ -15,3 +15,6 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     autoRefreshToken: true,
   }
 });
+
+// Note: Multiple GoTrueClient instances warning in development is normal
+// and can be safely ignored. This happens due to React's hot reloading.

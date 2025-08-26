@@ -107,17 +107,25 @@ const CreateAccount = () => {
   
   const [stepErrors, setStepErrors] = useState<Record<number, string[]>>({});
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth");
-    }
-  }, [user, authLoading, navigate]);
+  // Note: CreateAccount should be accessible without authentication for referral links
+  // The authentication check is handled by the RouteGuard component
 
   useEffect(() => {
     if (!profileLoading && profile?.has_completed_profile) {
       navigate("/dashboard");
     }
   }, [profile, profileLoading, navigate]);
+
+  // Redirect unauthenticated users to auth page with referral code
+  useEffect(() => {
+    if (!authLoading && !user) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref');
+      const redirectUrl = refCode ? `/auth?ref=${refCode}` : '/auth';
+      navigate(redirectUrl);
+      return;
+    }
+  }, [user, authLoading, navigate]);
 
   const updateFormData = (stepData: Partial<FormData>) => {
     setFormData(prev => ({ ...prev, ...stepData }));
@@ -223,6 +231,8 @@ const CreateAccount = () => {
         return;
       }
 
+
+
       toast({
         title: "Profile Complete!",
         description: "Welcome to Peaceful Investment. Your account is now set up.",
@@ -273,10 +283,6 @@ const CreateAccount = () => {
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   const progress = (currentStep / TOTAL_STEPS) * 100;

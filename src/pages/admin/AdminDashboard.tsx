@@ -16,7 +16,8 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
+  Share2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -330,6 +331,13 @@ export default function AdminDashboard() {
                 <Link to="/admin/accounts">
                   <CreditCard className="h-4 w-4 mr-2" />
                   View Accounts
+                </Link>
+              </Button>
+              
+              <Button asChild className="w-full justify-start" variant="outline">
+                <Link to="/admin/referrals">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Manage Referrals
                 </Link>
               </Button>
               

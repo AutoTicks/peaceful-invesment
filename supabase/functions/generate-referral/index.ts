@@ -99,7 +99,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const referralCode = codeData;
-    const referralLink = `${Deno.env.get('SUPABASE_URL')?.replace('https://satsigmywganodvjcsip.supabase.co', 'https://your-app-domain.com')}/signup?ref=${referralCode}`;
+    const referralLink = `http://localhost:8080/create-account?ref=${referralCode}`;
 
     // Create new referral
     const { data: newReferral, error: createError } = await supabase
@@ -108,6 +108,8 @@ const handler = async (req: Request): Promise<Response> => {
         user_id,
         referral_code: referralCode,
         referral_link: referralLink,
+        is_active: true,
+        status: 'pending',
       })
       .select()
       .single();

@@ -20,7 +20,7 @@ export interface MetaTraderAccount {
   updated_at: string;
 }
 
-export function useMetaTraderAccounts() {
+function useMetaTraderAccounts() {
   const [accounts, setAccounts] = useState<MetaTraderAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -172,3 +172,5 @@ export function useMetaTraderAccounts() {
     deleteAccount,
   };
 }
+
+export { useMetaTraderAccounts };
