@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, MapPin, Clock, Shield, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, MapPin, Shield, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import Footer from "@/components/Footer";
@@ -127,7 +127,6 @@ const Contact = () => {
     phone: "+1 (772) 321-1897",
     email: "support@peacefulinvestment.com",
     address: "Peaceful Investment Headquarters",
-    businessHours: "Monday - Friday: 9:00 AM - 6:00 PM EST",
   };
 
   const subjects = [
@@ -338,18 +337,6 @@ const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Phone Support</h4>
-                    <p className="text-muted-foreground">{contactInfo.phone}</p>
-                    <p className="text-sm text-muted-foreground">Available during business hours</p>
-                  </div>
-                </div>
-
-                <Separator />
 
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -374,18 +361,6 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <Separator />
-
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Business Hours</h4>
-                    <p className="text-muted-foreground">{contactInfo.businessHours}</p>
-                    <p className="text-sm text-muted-foreground">Emergency support available 24/7</p>
-                  </div>
-                </div>
               </CardContent>
             </Card>
 

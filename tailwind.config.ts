@@ -29,16 +29,47 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					muted: 'hsl(var(--primary-muted))',
+					50: 'hsl(var(--primary-50))',
+					100: 'hsl(var(--primary-100))',
+					200: 'hsl(var(--primary-200))',
+					300: 'hsl(var(--primary-300))',
+					400: 'hsl(var(--primary-400))',
+					500: 'hsl(var(--primary-500))',
+					600: 'hsl(var(--primary-600))',
+					700: 'hsl(var(--primary-700))',
+					800: 'hsl(var(--primary-800))',
+					900: 'hsl(var(--primary-900))',
 					foreground: 'hsl(var(--primary-foreground))'
+				},
+				accent: {
+					DEFAULT: 'hsl(var(--accent))',
+					50: 'hsl(var(--accent-50))',
+					100: 'hsl(var(--accent-100))',
+					200: 'hsl(var(--accent-200))',
+					300: 'hsl(var(--accent-300))',
+					400: 'hsl(var(--accent-400))',
+					500: 'hsl(var(--accent-500))',
+					600: 'hsl(var(--accent-600))',
+					700: 'hsl(var(--accent-700))',
+					800: 'hsl(var(--accent-800))',
+					900: 'hsl(var(--accent-900))',
+					foreground: 'hsl(var(--accent-foreground))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+				neutral: {
+					50: 'hsl(var(--neutral-50))',
+					100: 'hsl(var(--neutral-100))',
+					200: 'hsl(var(--neutral-200))',
+					300: 'hsl(var(--neutral-300))',
+					400: 'hsl(var(--neutral-400))',
+					500: 'hsl(var(--neutral-500))',
+					600: 'hsl(var(--neutral-600))',
+					700: 'hsl(var(--neutral-700))',
+					800: 'hsl(var(--neutral-800))',
+					900: 'hsl(var(--neutral-900))'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -48,9 +79,25 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
+				error: {
+					DEFAULT: 'hsl(var(--error))',
+					foreground: 'hsl(var(--error-foreground))'
+				},
+				info: {
+					DEFAULT: 'hsl(var(--info))',
+					foreground: 'hsl(var(--info-foreground))'
+				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
+					DEFAULT: 'hsl(var(--error))',
+					foreground: 'hsl(var(--error-foreground))'
 				},
 				glass: {
 					bg: 'hsl(var(--glass-bg))',
@@ -59,10 +106,20 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-warm': 'var(--gradient-warm)',
+				'gradient-cool': 'var(--gradient-cool)',
+				'gradient-neutral': 'var(--gradient-neutral)',
 				'gradient-hero': 'var(--gradient-hero)',
 				'gradient-glass': 'var(--gradient-glass)',
 			},
 			boxShadow: {
+				'xs': 'var(--shadow-xs)',
+				'sm': 'var(--shadow-sm)',
+				'md': 'var(--shadow-md)',
+				'lg': 'var(--shadow-lg)',
+				'xl': 'var(--shadow-xl)',
+				'gold': 'var(--shadow-gold)',
+				'blue': 'var(--shadow-blue)',
 				'soft': 'var(--shadow-soft)',
 				'glass': 'var(--shadow-glass)',
 				'card': 'var(--shadow-card)',

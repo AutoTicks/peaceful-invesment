@@ -57,16 +57,16 @@ const PersonalInformation = ({ formData, updateFormData, errors }: PersonalInfor
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="socialSecurityNumber">Social Security Number *</Label>
+        <Label htmlFor="socialSecurityNumber">Driver's License *</Label>
         <Input
           id="socialSecurityNumber"
           value={formData.socialSecurityNumber}
           onChange={(e) => updateFormData({ socialSecurityNumber: e.target.value })}
-          placeholder="XXX-XX-XXXX"
-          maxLength={11}
+          placeholder="Enter your driver's license number"
+          maxLength={20}
         />
         <p className="text-sm text-muted-foreground">
-          This information is encrypted and used only for identity verification and tax reporting.
+          This information is encrypted and used only for identity verification purposes.
         </p>
       </div>
     </div>

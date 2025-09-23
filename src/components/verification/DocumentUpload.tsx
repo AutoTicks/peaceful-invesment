@@ -8,9 +8,10 @@ import {
   X, 
   CheckCircle, 
   AlertTriangle,
-  Camera,
   CreditCard,
-  MapPin
+  FileText,
+  Building2,
+  Receipt
 } from 'lucide-react';
 
 interface DocumentUploadProps {
@@ -20,24 +21,38 @@ interface DocumentUploadProps {
 
 const documentTypes = [
   {
-    type: 'id_document',
-    title: 'Government ID',
-    description: 'Driver\'s license, passport, or national ID card',
+    type: 'drivers_license_front',
+    title: "Driver's License (Front)",
+    description: "Upload the front of your driver's license",
     icon: CreditCard,
     required: true
   },
   {
-    type: 'selfie',
-    title: 'Selfie with ID',
-    description: 'A clear photo of yourself holding your ID document',
-    icon: Camera,
+    type: 'drivers_license_back',
+    title: "Driver's License (Back)",
+    description: "Upload the back of your driver's license",
+    icon: CreditCard,
     required: true
   },
   {
-    type: 'proof_of_address',
-    title: 'Proof of Address',
-    description: 'Utility bill, bank statement, or lease agreement (last 3 months)',
-    icon: MapPin,
+    type: 'passport',
+    title: 'Passport',
+    description: 'Upload the photo page of your passport',
+    icon: FileText,
+    required: true
+  },
+  {
+    type: 'bank_statement',
+    title: 'Bank Statement',
+    description: 'Upload a recent bank statement (within 90 days)',
+    icon: Building2,
+    required: false
+  },
+  {
+    type: 'utility_bill',
+    title: 'Utility Bill',
+    description: 'Upload a recent utility bill (within 90 days)',
+    icon: Receipt,
     required: false
   }
 ];
@@ -88,7 +103,7 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ onSubmit, loadin
 
   const handleSubmit = async () => {
     if (uploadedFiles.length === 0) {
-      setErrors(['Please upload at least one document']);
+      setErrors(['Please upload at least one required document (Driver\'s License Front/Back or Passport)']);
       return;
     }
 
@@ -101,33 +116,55 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ onSubmit, loadin
     }
   };
 
-  const hasRequiredDocs = uploadedFiles.length >= 2; // At least ID and selfie
+  const hasRequiredDocs = uploadedFiles.length >= 1; // At least one required document (Driver's License Front/Back or Passport)
 
   return (
     <div className="space-y-6">
       {/* Document Requirements */}
       <div>
-        <h3 className="text-lg font-semibold mb-4">Required Documents</h3>
-        <div className="grid gap-4">
-          {documentTypes.map((docType) => {
-            const DocIcon = docType.icon;
-            return (
-              <div key={docType.type} className="flex items-center gap-3 p-4 border rounded-lg">
-                <DocIcon className="h-8 w-8 text-primary" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-medium">{docType.title}</h4>
-                    {docType.required && (
-                      <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">
-                        Required
-                      </span>
-                    )}
+        <h3 className="text-lg font-semibold mb-4">Document Requirements</h3>
+        <div className="space-y-4">
+          <div className="p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">Required Documents (Choose One):</h4>
+            <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
+              You must upload at least one of the following for identity verification:
+            </p>
+            <div className="space-y-2">
+              {documentTypes.filter(doc => doc.required).map((docType) => {
+                const DocIcon = docType.icon;
+                return (
+                  <div key={docType.type} className="flex items-center gap-3 p-2 bg-white dark:bg-gray-800 rounded border">
+                    <DocIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <div>
+                      <span className="text-sm font-medium">{docType.title}</span>
+                      <p className="text-xs text-muted-foreground">{docType.description}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{docType.description}</p>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
+          
+          <div className="p-4 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-lg">
+            <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2">Optional Documents:</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+              Additional documents that may help with verification:
+            </p>
+            <div className="space-y-2">
+              {documentTypes.filter(doc => !doc.required).map((docType) => {
+                const DocIcon = docType.icon;
+                return (
+                  <div key={docType.type} className="flex items-center gap-3 p-2 bg-white dark:bg-gray-800 rounded border">
+                    <DocIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    <div>
+                      <span className="text-sm font-medium">{docType.title}</span>
+                      <p className="text-xs text-muted-foreground">{docType.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -225,7 +262,11 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({ onSubmit, loadin
         <AlertTriangle className="h-4 w-4" />
         <AlertDescription>
           <strong>Privacy Notice:</strong> Your documents are encrypted and stored securely. 
-          They will only be used for verification purposes and will be deleted after verification is complete.
+          They will only be used for identity verification purposes and will be deleted after verification is complete.
+          <br /><br />
+          <strong>Accepted Formats:</strong> JPG, PNG, PDF files up to 10MB each.
+          <br />
+          <strong>Required:</strong> At least one of Driver's License (Front/Back) or Passport for verification.
         </AlertDescription>
       </Alert>
     </div>

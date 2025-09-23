@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Shield, Eye, EyeOff, User, Lock } from "lucide-react";
+import Footer from "@/components/Footer";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -352,6 +353,7 @@ const Auth = () => {
           </form>
         </CardContent>
       </Card>
+      <Footer />
     </div>
   );
 };

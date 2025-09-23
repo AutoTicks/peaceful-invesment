@@ -67,7 +67,7 @@ const SecuritySetup = ({ formData, updateFormData, errors }: SecuritySetupProps)
               <SelectTrigger>
                 <SelectValue placeholder="Select a security question" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                 {SECURITY_QUESTIONS.filter(q => 
                   q === qa.question || !formData.securityQuestions.some(existing => existing.question === q)
                 ).map((question) => (

@@ -1,8 +1,8 @@
 import { FormData } from "@/pages/CreateAccount";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import LocationSelector from "@/components/ui/location-selector";
 
 interface ContactInformationProps {
   formData: FormData;
@@ -10,15 +10,24 @@ interface ContactInformationProps {
   errors: string[];
 }
 
-const US_STATES = [
-  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
-];
-
 const ContactInformation = ({ formData, updateFormData, errors }: ContactInformationProps) => {
+  // Handle location changes from the LocationSelector
+  const handleLocationChange = (location: {
+    country?: string;
+    countryCode?: string;
+    state?: string;
+    stateCode?: string;
+    city?: string;
+  }) => {
+    updateFormData({
+      country: location.country || '',
+      countryCode: location.countryCode || '',
+      state: location.state || '',
+      stateCode: location.stateCode || '',
+      city: location.city || ''
+    });
+  };
+
   return (
     <div className="space-y-4">
       {errors.length > 0 && (
@@ -54,43 +63,34 @@ const ContactInformation = ({ formData, updateFormData, errors }: ContactInforma
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="city">City *</Label>
-          <Input
-            id="city"
-            value={formData.city}
-            onChange={(e) => updateFormData({ city: e.target.value })}
-            placeholder="Enter city"
-          />
-        </div>
+      {/* Global Location Selector */}
+      <div className="space-y-2">
+        <Label className="text-base font-semibold">Location *</Label>
+        <LocationSelector
+          value={{
+            country: formData.country,
+            state: formData.state,
+            city: formData.city
+          }}
+          onChange={handleLocationChange}
+          enableGeolocation={true}
+          enableSearch={true}
+          showLabels={true}
+          required={true}
+          layout="grid"
+          showPopulation={true}
+          className="mt-2"
+        />
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="state">State *</Label>
-          <Select 
-            value={formData.state} 
-            onValueChange={(value) => updateFormData({ state: value })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select state" />
-            </SelectTrigger>
-            <SelectContent>
-              {US_STATES.map((state) => (
-                <SelectItem key={state} value={state}>
-                  {state}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="zipCode">ZIP Code *</Label>
+          <Label htmlFor="zipCode">ZIP/Postal Code *</Label>
           <Input
             id="zipCode"
             value={formData.zipCode}
             onChange={(e) => updateFormData({ zipCode: e.target.value })}
-            placeholder="12345"
+            placeholder="Enter ZIP/Postal code"
             maxLength={10}
           />
         </div>

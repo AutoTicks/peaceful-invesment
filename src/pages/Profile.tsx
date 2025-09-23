@@ -14,6 +14,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Upload, User, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const profileSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
@@ -393,6 +394,7 @@ const Profile = () => {
           </Card>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

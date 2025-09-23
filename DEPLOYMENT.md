@@ -7,6 +7,7 @@ This guide will help you deploy your React application to Coolify.
 1. **Coolify Instance**: Access to a Coolify server
 2. **Git Repository**: Your code should be in a Git repository (GitHub, GitLab, etc.)
 3. **Environment Variables**: Prepare your production environment variables
+4. **Package Manager**: This project uses **pnpm** as the package manager
 
 ## 🔧 Environment Variables
 
@@ -26,10 +27,13 @@ VITE_POCKETBASE_ADMIN_PASSWORD=your_admin_password
 ## 🐳 Docker Configuration
 
 The project includes:
-- `Dockerfile` - Multi-stage build for production
+- `Dockerfile` - Multi-stage build for production using pnpm
 - `nginx.conf` - Nginx configuration for SPA routing
 - `.dockerignore` - Excludes unnecessary files
 - `docker-compose.yml` - For local testing
+- `pnpm-lock.yaml` - Lock file for reproducible builds
+
+**Note**: The Dockerfile automatically installs pnpm and uses it for dependency management.
 
 ## 📦 Coolify Deployment Steps
 
@@ -75,10 +79,16 @@ NODE_ENV=production
 
 1. **Build Fails**
    - Check if all dependencies are in `package.json`
-   - Verify Node.js version compatibility
+   - Verify Node.js version compatibility (18+)
    - Check build logs for specific errors
+   - Ensure `pnpm-lock.yaml` is committed to repository
 
-2. **Environment Variables Not Working**
+2. **Package Manager Issues**
+   - The Dockerfile automatically installs pnpm
+   - Ensure `pnpm-lock.yaml` is up to date
+   - Run `pnpm install` locally to regenerate lock file if needed
+
+3. **Environment Variables Not Working**
    - Ensure all variables start with `VITE_` for client-side access
    - Verify variable names match your code
    - Check Coolify environment variable configuration
@@ -88,7 +98,7 @@ NODE_ENV=production
    - Check if React Router is properly configured
    - Ensure all routes fall back to `index.html`
 
-4. **API Connection Issues**
+5. **API Connection Issues**
    - Verify Supabase and PocketBase URLs are correct
    - Check CORS settings on your backend services
    - Ensure API keys are valid
@@ -98,6 +108,9 @@ NODE_ENV=production
 Before deploying to Coolify, test locally:
 
 ```bash
+# Install dependencies
+pnpm install
+
 # Build and run with Docker Compose
 docker-compose up --build
 
@@ -128,6 +141,7 @@ Coolify supports automatic deployments:
 - Health check endpoint is available at `/health`
 - Static assets are cached for 1 year
 - Gzip compression is enabled for better performance
+- **Package Management**: Uses pnpm for faster, more efficient dependency management
 
 ## 🆘 Support
 
@@ -136,3 +150,4 @@ If you encounter issues:
 2. Verify Docker build locally
 3. Test environment variables
 4. Review nginx configuration
+5. Ensure pnpm lock file is committed

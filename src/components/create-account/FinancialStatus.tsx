@@ -55,7 +55,7 @@ const FinancialStatus = ({ formData, updateFormData, errors }: FinancialStatusPr
           <SelectTrigger>
             <SelectValue placeholder="Select your annual income range" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
             {INCOME_RANGES.map((range) => (
               <SelectItem key={range.value} value={range.value.toString()}>
                 {range.label}
@@ -77,7 +77,7 @@ const FinancialStatus = ({ formData, updateFormData, errors }: FinancialStatusPr
           <SelectTrigger>
             <SelectValue placeholder="Select your net worth range" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
             {NET_WORTH_RANGES.map((range) => (
               <SelectItem key={range.value} value={range.value.toString()}>
                 {range.label}
@@ -99,7 +99,7 @@ const FinancialStatus = ({ formData, updateFormData, errors }: FinancialStatusPr
           <SelectTrigger>
             <SelectValue placeholder="Select your liquid net worth range" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
             {NET_WORTH_RANGES.map((range) => (
               <SelectItem key={range.value} value={range.value.toString()}>
                 {range.label}

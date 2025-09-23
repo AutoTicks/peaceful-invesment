@@ -17,6 +17,9 @@ import SecuritySetup from "@/components/create-account/SecuritySetup";
 import DocumentUpload from "@/components/create-account/DocumentUpload";
 import InvestmentExperience from "@/components/create-account/InvestmentExperience";
 import ReviewSubmit from "@/components/create-account/ReviewSubmit";
+import OverseasCompanyStep from "@/components/create-account/OverseasCompanyStep";
+import LoadingScreen from "@/components/ui/loading-screen";
+import Footer from "@/components/Footer";
 
 export interface FormData {
   // Personal Information
@@ -28,8 +31,11 @@ export interface FormData {
   // Contact Information
   phone: string;
   address: string;
-  city: string;
+  country: string;
+  countryCode: string;
   state: string;
+  stateCode: string;
+  city: string;
   zipCode: string;
   
   // Employment Information
@@ -54,15 +60,22 @@ export interface FormData {
   
   // Document Upload
   documents: File[];
+  documentsByType: Record<string, File[]>;
   
   // Investment Experience
   investmentExperience: string;
   riskTolerance: string;
   investmentGoals: string[];
   investmentTimeHorizon: string;
+  
+  // USA Client Requirements
+  isUSAClient: boolean;
+  overseasCompanyRequired: boolean;
+  overseasCompanyCompleted: boolean;
+  overseasCompanyId?: string;
 }
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 8; // Will be 9 for USA clients
 
 const CreateAccount = () => {
   const { user, loading: authLoading } = useAuth();
@@ -71,6 +84,8 @@ const CreateAccount = () => {
   const { toast } = useToast();
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -78,8 +93,11 @@ const CreateAccount = () => {
     socialSecurityNumber: "",
     phone: "",
     address: "",
-    city: "",
+    country: "",
+    countryCode: "",
     state: "",
+    stateCode: "",
+    city: "",
     zipCode: "",
     employmentStatus: "",
     employer: "",
@@ -99,10 +117,15 @@ const CreateAccount = () => {
       { question: "", answer: "" },
     ],
     documents: [],
+    documentsByType: {},
     investmentExperience: "",
     riskTolerance: "",
     investmentGoals: [],
     investmentTimeHorizon: "",
+    isUSAClient: false,
+    overseasCompanyRequired: false,
+    overseasCompanyCompleted: false,
+    overseasCompanyId: undefined,
   });
   
   const [stepErrors, setStepErrors] = useState<Record<number, string[]>>({});
@@ -128,7 +151,20 @@ const CreateAccount = () => {
   }, [user, authLoading, navigate]);
 
   const updateFormData = (stepData: Partial<FormData>) => {
-    setFormData(prev => ({ ...prev, ...stepData }));
+    setFormData(prev => {
+      const newData = { ...prev, ...stepData };
+      
+      // Check if this is a USA client and update accordingly
+      const isUSAClient = newData.countryCode === 'US' || newData.country === 'United States';
+      if (isUSAClient !== prev.isUSAClient) {
+        newData.isUSAClient = isUSAClient;
+        newData.overseasCompanyRequired = isUSAClient;
+        newData.overseasCompanyCompleted = false;
+        newData.overseasCompanyId = undefined;
+      }
+      
+      return newData;
+    });
   };
 
   const validateCurrentStep = (): boolean => {
@@ -144,8 +180,9 @@ const CreateAccount = () => {
       case 2:
         if (!formData.phone.trim()) errors.push("Phone number is required");
         if (!formData.address.trim()) errors.push("Address is required");
-        if (!formData.city.trim()) errors.push("City is required");
+        if (!formData.country.trim()) errors.push("Country is required");
         if (!formData.state.trim()) errors.push("State is required");
+        if (!formData.city.trim()) errors.push("City is required");
         if (!formData.zipCode.trim()) errors.push("ZIP code is required");
         break;
       case 3:
@@ -172,12 +209,28 @@ const CreateAccount = () => {
         }
         break;
       case 6:
-        if (formData.documents.length === 0) errors.push("At least one document is required");
+        // Check if at least one required document type has files
+        const requiredDocumentTypes = ['drivers_license_front', 'drivers_license_back', 'passport'];
+        const hasRequiredDocuments = requiredDocumentTypes.some(type => 
+          formData.documentsByType[type] && formData.documentsByType[type].length > 0
+        );
+        if (!hasRequiredDocuments) {
+          errors.push("At least one required document is required (Driver's License Front/Back or Passport)");
+        }
         break;
       case 7:
         if (!formData.investmentExperience) errors.push("Investment experience is required");
         if (!formData.riskTolerance) errors.push("Risk tolerance is required");
         if (formData.investmentGoals.length === 0) errors.push("At least one investment goal is required");
+        break;
+      case 8:
+        // Review step - no validation needed, just review
+        break;
+      case 9:
+        // USA clients must complete overseas company registration
+        if (formData.isUSAClient && !formData.overseasCompanyCompleted) {
+          errors.push("Overseas company registration is required for USA clients before trading access");
+        }
         break;
     }
 
@@ -187,7 +240,8 @@ const CreateAccount = () => {
 
   const handleNext = () => {
     if (validateCurrentStep()) {
-      if (currentStep < TOTAL_STEPS) {
+      const maxSteps = formData.isUSAClient ? 9 : 8; // USA clients have 9 steps
+      if (currentStep < maxSteps) {
         setCurrentStep(prev => prev + 1);
       }
     }
@@ -202,7 +256,14 @@ const CreateAccount = () => {
   const handleSubmit = async () => {
     if (!validateCurrentStep()) return;
 
+    setIsSubmitting(true);
+    setLoadingStep(0);
+
     try {
+      // Step 1: Processing Profile Information
+      setLoadingStep(1);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
       const profileUpdates = {
         full_name: `${formData.firstName} ${formData.lastName}`,
         phone: formData.phone,
@@ -216,13 +277,38 @@ const CreateAccount = () => {
         investment_experience: formData.investmentExperience,
         risk_tolerance: formData.riskTolerance,
         investment_goals: formData.investmentGoals,
-        documents_uploaded: formData.documents.length > 0,
+        documents_uploaded: Object.values(formData.documentsByType || {}).flat().length > 0,
         has_completed_profile: true,
       };
 
-      const { error } = await updateProfile(profileUpdates);
+      // Step 2: Verifying Documents
+      setLoadingStep(2);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Step 3: Setting Up Security
+      setLoadingStep(3);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Step 4: Preparing Investment Profile
+      setLoadingStep(4);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Step 5: Finalizing Account
+      setLoadingStep(5);
+      
+      // Add USA client information to profile updates
+      const finalProfileUpdates = {
+        ...profileUpdates,
+        is_usa_client: formData.isUSAClient,
+        overseas_company_required: formData.overseasCompanyRequired,
+        overseas_company_completed: formData.overseasCompanyCompleted,
+        overseas_company_id: formData.overseasCompanyId,
+      };
+
+      const { error } = await updateProfile(finalProfileUpdates);
 
       if (error) {
+        setIsSubmitting(false);
         toast({
           title: "Error",
           description: "Failed to save profile. Please try again.",
@@ -231,15 +317,29 @@ const CreateAccount = () => {
         return;
       }
 
+      // Success delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-
-      toast({
-        title: "Profile Complete!",
-        description: "Welcome to Peaceful Investment. Your account is now set up.",
-      });
-
-      navigate("/dashboard");
+      // Handle USA client redirect
+      if (formData.isUSAClient) {
+        toast({
+          title: "Account Created!",
+          description: "Your account has been created. You'll now be redirected to complete your overseas company registration.",
+        });
+        
+        // Redirect USA clients to overseas company page
+        navigate("/overseas-company");
+      } else {
+        toast({
+          title: "Profile Complete!",
+          description: "Welcome to Peaceful Investment. Your account is now set up.",
+        });
+        
+        // Redirect non-USA clients to dashboard
+        navigate("/dashboard");
+      }
     } catch (error) {
+      setIsSubmitting(false);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
@@ -272,6 +372,8 @@ const CreateAccount = () => {
         return <InvestmentExperience {...stepProps} />;
       case 8:
         return <ReviewSubmit {...stepProps} />;
+      case 9:
+        return <OverseasCompanyStep {...stepProps} />;
       default:
         return null;
     }
@@ -285,7 +387,13 @@ const CreateAccount = () => {
     );
   }
 
-  const progress = (currentStep / TOTAL_STEPS) * 100;
+  // Show professional loading screen during submission
+  if (isSubmitting) {
+    return <LoadingScreen currentStep={loadingStep} />;
+  }
+
+  const maxSteps = formData.isUSAClient ? 9 : 8; // USA clients have 9 steps
+  const progress = (currentStep / maxSteps) * 100;
 
   return (
     <div className="min-h-screen bg-background pt-16 pb-8">
@@ -295,7 +403,8 @@ const CreateAccount = () => {
             Complete Your Account Setup
           </h1>
           <p className="text-muted-foreground">
-            Step {currentStep} of {TOTAL_STEPS} - Please provide the required information to activate your investment account.
+            Step {currentStep} of {maxSteps} - Please provide the required information to activate your investment account.
+            {formData.isUSAClient && currentStep === 9 && " USA clients must complete overseas company registration before trading access."}
           </p>
         </div>
 
@@ -320,6 +429,7 @@ const CreateAccount = () => {
               {currentStep === 6 && "Document Upload"}
               {currentStep === 7 && "Investment Experience"}
               {currentStep === 8 && "Review & Submit"}
+              {currentStep === 9 && "Overseas Company Registration"}
             </CardTitle>
             <CardDescription>
               {currentStep === 1 && "Tell us about yourself"}
@@ -330,6 +440,7 @@ const CreateAccount = () => {
               {currentStep === 6 && "Upload required documents"}
               {currentStep === 7 && "Your investment preferences"}
               {currentStep === 8 && "Review your information before submitting"}
+              {currentStep === 9 && "Required for USA clients - Complete overseas company registration"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -347,7 +458,7 @@ const CreateAccount = () => {
                 Back
               </Button>
 
-              {currentStep < TOTAL_STEPS ? (
+              {currentStep < maxSteps ? (
                 <Button
                   onClick={handleNext}
                   className="flex items-center gap-2"
@@ -360,13 +471,14 @@ const CreateAccount = () => {
                   onClick={handleSubmit}
                   className="bg-primary hover:bg-primary/90"
                 >
-                  Complete Account Setup
+                  {formData.isUSAClient ? "Complete & Redirect to Overseas Company" : "Complete Account Setup"}
                 </Button>
               )}
             </div>
           </CardContent>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 };

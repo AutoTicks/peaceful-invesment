@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBlog, BlogPost } from "@/hooks/useBlog";
 import ReactMarkdown from "react-markdown";
+import Footer from "@/components/Footer";
 
 const Blog = () => {
   const { posts, categories, loading } = useBlog();
@@ -98,6 +99,7 @@ const Blog = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

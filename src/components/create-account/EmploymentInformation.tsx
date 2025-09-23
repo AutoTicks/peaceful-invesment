@@ -90,7 +90,7 @@ const EmploymentInformation = ({ formData, updateFormData, errors }: EmploymentI
           <SelectTrigger>
             <SelectValue placeholder="Select your employment status" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
             {EMPLOYMENT_STATUS_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -121,7 +121,7 @@ const EmploymentInformation = ({ formData, updateFormData, errors }: EmploymentI
               <SelectTrigger>
                 <SelectValue placeholder="Select employer's country" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                 {COUNTRIES.map((country) => (
                   <SelectItem key={country.value} value={country.value}>
                     {country.label}
@@ -216,7 +216,7 @@ const EmploymentInformation = ({ formData, updateFormData, errors }: EmploymentI
             <SelectTrigger>
               <SelectValue placeholder="Select your business type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
               {BUSINESS_NATURE_OPTIONS.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}

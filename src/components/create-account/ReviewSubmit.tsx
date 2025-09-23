@@ -183,16 +183,45 @@ const ReviewSubmit = ({ formData }: ReviewSubmitProps) => {
           <CardContent>
             <div>
               <p className="text-sm text-muted-foreground">Uploaded Documents</p>
-              <p className="font-medium">{formData.documents.length} document(s) uploaded</p>
-              {formData.documents.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  {formData.documents.map((file, index) => (
-                    <Badge key={index} variant="secondary" className="mr-2">
-                      {file.name}
-                    </Badge>
-                  ))}
-                </div>
-              )}
+              {(() => {
+                const totalDocs = Object.values(formData.documentsByType || {}).flat().length;
+                const documentTypes = Object.entries(formData.documentsByType || {}).filter(([_, files]) => files.length > 0);
+                
+                return (
+                  <>
+                    <p className="font-medium">{totalDocs} document(s) uploaded</p>
+                    {documentTypes.length > 0 && (
+                      <div className="mt-4 space-y-3">
+                        {documentTypes.map(([docType, files]) => (
+                          <div key={docType} className="space-y-2">
+                            <h4 className="text-sm font-medium capitalize">
+                              {docType.replace(/_/g, ' ').replace('front', 'Front').replace('back', 'Back')}
+                            </h4>
+                            <div className="grid grid-cols-2 gap-2">
+                              {files.map((file, index) => (
+                                <div key={index} className="flex items-center space-x-3 p-3 border rounded-md bg-muted/50">
+                                  {file.type.startsWith('image/') ? (
+                                    <img 
+                                      src={URL.createObjectURL(file)} 
+                                      alt={file.name}
+                                      className="w-16 h-16 object-cover rounded border"
+                                    />
+                                  ) : (
+                                    <div className="w-16 h-16 bg-blue-100 rounded border flex items-center justify-center">
+                                      <span className="text-sm font-medium">PDF</span>
+                                    </div>
+                                  )}
+                                  <span className="text-sm truncate flex-1">{file.name}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </CardContent>
         </Card>

@@ -99,7 +99,8 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const referralCode = codeData;
-    const referralLink = `http://localhost:8080/create-account?ref=${referralCode}`;
+    // Use production domain for referral links
+    const referralLink = `https://www.peacefulinvestment.com/create-account?ref=${referralCode}`;
 
     // Create new referral
     const { data: newReferral, error: createError } = await supabase

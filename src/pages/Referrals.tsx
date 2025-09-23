@@ -14,6 +14,7 @@ import { Copy, Share2, Mail, DollarSign, Users, TrendingUp, Calendar, ArrowUpRig
 import { toast } from "@/hooks/use-toast";
 import ReferralAnalytics from "@/components/referrals/ReferralAnalytics";
 import SocialShare from "@/components/referrals/SocialShare";
+import Footer from "@/components/Footer";
 
 const Referrals = () => {
   const { user } = useAuth();
@@ -521,6 +522,7 @@ const Referrals = () => {
           </CardContent>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 };

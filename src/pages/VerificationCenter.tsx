@@ -20,6 +20,7 @@ import {
   FileText,
   Users
 } from 'lucide-react';
+import Footer from '@/components/Footer';
 
 const statusConfig = {
   unverified: {
@@ -241,6 +242,7 @@ const VerificationCenter: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </div>
   );
 };

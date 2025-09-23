@@ -11,6 +11,7 @@ import {
   getAccountsByUserId,
   type PocketBaseAccount 
 } from "@/integrations/pocketbase/client";
+import Footer from "@/components/Footer";
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
@@ -415,6 +416,7 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

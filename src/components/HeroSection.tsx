@@ -12,31 +12,43 @@ const HeroSection = () => {
   };
 
   const handleDownload = (os: string) => {
-    // Placeholder for actual download logic
-    console.log(`Downloading Peaceful Investment App for ${os}`);
+    // TODO: Implement actual download logic
+    // This will trigger the appropriate download based on OS detection
+    window.open(`/downloads/${os.toLowerCase()}`, '_blank');
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Trading Hero Background */}
-      <div 
-        className="absolute inset-0 hero-bg"
-        style={{
-          backgroundImage: `linear-gradient(135deg, rgba(11, 27, 59, 0.95) 0%, rgba(15, 23, 42, 0.9) 50%, rgba(0, 198, 255, 0.1) 100%), url(${tradingHeroBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
-      
-      {/* Floating Trading Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-xl animate-float" />
-        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-primary/10 rounded-full blur-lg animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-primary/15 rounded-full blur-md animate-float" style={{ animationDelay: '2s' }} />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
+      {/* Professional Hero Background */}
+      <div className="absolute inset-0">
+        {/* Base gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent-50 via-primary-50 to-accent-100" />
         
-        {/* Trading symbols floating */}
-        <div className="absolute top-20 right-20 text-primary/20 text-4xl animate-float" style={{ animationDelay: '0.5s' }}>$</div>
-        <div className="absolute bottom-20 left-20 text-primary/20 text-3xl animate-float" style={{ animationDelay: '1.5s' }}>₿</div>
+        {/* Animated geometric patterns */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-primary-200 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent-200 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary-100 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Animated circles */}
+          <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-primary-400/20 rounded-full animate-bounce" style={{ animationDuration: '3s', animationDelay: '0s' }} />
+          <div className="absolute top-3/4 right-1/4 w-16 h-16 bg-accent-400/20 rounded-full animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }} />
+          <div className="absolute top-1/2 right-1/3 w-12 h-12 bg-primary-300/30 rounded-full animate-bounce" style={{ animationDuration: '2.5s', animationDelay: '2s' }} />
+          
+          {/* Floating trading icons */}
+          <div className="absolute top-20 right-20 text-primary-400/30 text-5xl animate-float hover-glow" style={{ animationDelay: '0.5s' }}>$</div>
+          <div className="absolute bottom-20 left-20 text-accent-400/30 text-4xl animate-float hover-glow" style={{ animationDelay: '1.5s' }}>₿</div>
+          <div className="absolute top-1/3 right-1/3 text-primary-300/25 text-3xl animate-float hover-glow" style={{ animationDelay: '2.5s' }}>📈</div>
+        </div>
+        
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--primary)) 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }} />
       </div>
 
       {/* Content */}
@@ -44,27 +56,29 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="text-left lg:text-left">
-            {/* Bot Icon */}
+            {/* Enhanced Bot Icon */}
             <div className="mb-8 animate-slide-up">
-              <div className="w-20 h-20 mx-auto lg:mx-0 mb-6 glass rounded-3xl flex items-center justify-center">
-                <Bot className="w-10 h-10 text-primary" />
+              <div className="w-20 h-20 mx-auto lg:mx-0 mb-6 bg-primary-gradient rounded-3xl flex items-center justify-center shadow-gold hover-lift">
+                <Bot className="w-10 h-10 text-white" />
               </div>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              Control Your <span className="text-gradient bg-gradient-to-r from-primary to-primary-muted bg-clip-text text-transparent">Investment Bots</span> from Anywhere
+            {/* Enhanced Main Headline */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-neutral-900 mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              Control Your <span className="text-primary-gradient">Investment Bots</span> from Anywhere
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl animate-slide-up" style={{ animationDelay: '0.4s' }}>
-              Peaceful Investment - Easily manage strategies, monitor trades, and optimize performance.
+            {/* Enhanced Subtitle */}
+            <p className="text-xl md:text-2xl text-neutral-700 mb-8 max-w-2xl animate-slide-up" style={{ animationDelay: '0.4s' }}>
+              Peaceful Investment - Easily manage strategies, monitor trades, and optimize performance with professional-grade tools.
             </p>
 
-            {/* Download Buttons */}
+            {/* Enhanced Download Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-start animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <Button 
-                className="download-btn-primary group"
+                variant="gradient"
+                size="lg"
+                className="group hover-lift"
                 onClick={() => handleDownload('Windows')}
               >
                 <Monitor className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
@@ -72,7 +86,9 @@ const HeroSection = () => {
               </Button>
               
               <Button 
-                className="download-btn-primary group"
+                variant="accent"
+                size="lg"
+                className="group hover-lift"
                 onClick={() => handleDownload('macOS')}
               >
                 <Apple className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
@@ -80,7 +96,9 @@ const HeroSection = () => {
               </Button>
               
               <Button 
-                className="download-btn-primary group"
+                variant="outline"
+                size="lg"
+                className="group hover-lift border-primary/30 hover:border-primary"
                 onClick={() => handleDownload('Linux')}
               >
                 <Smartphone className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
@@ -88,53 +106,64 @@ const HeroSection = () => {
               </Button>
             </div>
 
-            {/* Auto-detect Note */}
-            <p className="text-primary/80 mt-6 animate-fade-in flex items-center gap-2" style={{ animationDelay: '0.8s' }}>
-              <TrendingUp className="w-4 h-4" />
-              Detected OS: <span className="font-semibold text-white">{detectOS()}</span> • Works with MT4 & MT5
-            </p>
+            {/* Enhanced Auto-detect Note */}
+            <div className="mt-6 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+              <div className="inline-flex items-center gap-3 px-4 py-2 bg-primary-100/50 rounded-full border border-primary-200/50">
+                <TrendingUp className="w-4 h-4 text-primary-600" />
+                <span className="text-sm text-neutral-700">
+                  Detected OS: <span className="font-semibold text-primary-700">{detectOS()}</span> • Works with MT4 & MT5
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Right Content - Dashboard Preview */}
+          {/* Enhanced Right Content - Dashboard Preview */}
           <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <div className="relative">
-              <div className="glass-card p-4">
+              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-xl hover-lift border border-white/20">
                 <img 
                   src={dashboardMockup} 
                   alt="Peaceful Investment Dashboard" 
-                  className="w-full h-auto rounded-xl shadow-2xl"
+                  className="w-full h-auto rounded-xl shadow-lg"
                 />
               </div>
-              {/* Floating metrics */}
-              <div className="absolute -top-4 -right-4 glass-card p-4 animate-float">
-                <div className="text-primary text-sm font-semibold">+1,247 USD</div>
-                <div className="text-white/70 text-xs">Today's Profit</div>
+              
+              {/* Enhanced Floating metrics */}
+              <div className="absolute -top-6 -right-6 bg-success text-success-foreground p-4 rounded-xl shadow-lg animate-float hover-glow">
+                <div className="text-sm font-bold">+1,247 USD</div>
+                <div className="text-xs opacity-90">Today's Profit</div>
               </div>
-              <div className="absolute -bottom-4 -left-4 glass-card p-4 animate-float" style={{ animationDelay: '1s' }}>
-                <div className="text-primary text-sm font-semibold">94.2%</div>
-                <div className="text-white/70 text-xs">Win Rate</div>
+              
+              <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-4 rounded-xl shadow-lg animate-float hover-glow" style={{ animationDelay: '1s' }}>
+                <div className="text-sm font-bold">94.2%</div>
+                <div className="text-xs opacity-90">Win Rate</div>
+              </div>
+              
+              <div className="absolute top-1/2 -right-8 bg-accent text-accent-foreground p-3 rounded-lg shadow-lg animate-float hover-glow" style={{ animationDelay: '0.5s' }}>
+                <div className="text-xs font-bold">Live</div>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mt-1"></div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Stats Row */}
+        {/* Enhanced Stats Row */}
         <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mt-20 animate-fade-in" style={{ animationDelay: '1s' }}>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-white">50K+</div>
-            <div className="text-white/70">Active Traders</div>
+          <div className="text-center bg-white/10 backdrop-blur-sm p-6 rounded-xl hover-lift border border-white/20">
+            <div className="text-3xl font-bold text-primary-700">50K+</div>
+            <div className="text-neutral-600">Active Traders</div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-white">$2.8B+</div>
-            <div className="text-white/70">Volume Managed</div>
+          <div className="text-center bg-white/10 backdrop-blur-sm p-6 rounded-xl hover-lift border border-white/20">
+            <div className="text-3xl font-bold text-success-700">$2.8B+</div>
+            <div className="text-neutral-600">Volume Managed</div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-white">99.9%</div>
-            <div className="text-white/70">Uptime</div>
+          <div className="text-center bg-white/10 backdrop-blur-sm p-6 rounded-xl hover-lift border border-white/20">
+            <div className="text-3xl font-bold text-accent-700">99.9%</div>
+            <div className="text-neutral-600">Uptime</div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-white">24/7</div>
-            <div className="text-white/70">Monitoring</div>
+          <div className="text-center bg-white/10 backdrop-blur-sm p-6 rounded-xl hover-lift border border-white/20">
+            <div className="text-3xl font-bold text-primary-700">24/7</div>
+            <div className="text-neutral-600">Monitoring</div>
           </div>
         </div>
       </div>

@@ -72,8 +72,8 @@ function AppContent() {
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/trading" element={<TradingDashboard />} />
                   <Route path="/contact" element={<Contact />} />
-                                     <Route path="/about" element={<About />} />
-                   <Route path="/create-admin" element={<CreateAdminUser />} />
+                  <Route path="/about" element={<About />} />
+            <Route path="/create-admin" element={<CreateAdminUser />} />
                    
                    {/* Admin Routes */}
                   <Route path="/admin" element={
